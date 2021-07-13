@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "658814507954",
+    "project_id": "sanc-6f7c7",
+    "storage_bucket": "sanc-6f7c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658814507954:android:f07104c2370b4d4519e2ab",
+        "android_client_info": {
+          "package_name": "com.sanchari.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658814507954-f191jen75vjrd8r53rhaha9fmurmamqb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sanchari.app",
+            "certificate_hash": "c24df6697e1f09c49194c489ebcecc8563bcfb76"
+          }
+        },
+        {
+          "client_id": "658814507954-mqbq5vqpd1k3nbdht70i1eg7r9ptv9k2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLCMiTy9W1YInGuVYQNGq8CGwgMTZwjBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658814507954-mqbq5vqpd1k3nbdht70i1eg7r9ptv9k2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
