@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
+import 'homepage.dart';
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -34,9 +36,25 @@ class MYHomePage extends StatefulWidget {
 
 class _MYHomePageState extends State<MYHomePage> {
   @override
-  Widget build(BuildContext context) {
-    return SignUpWidget();
-  }
+  Widget build(BuildContext context) => Scaffold(
+        body: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text("error"),
+                );
+              } else if (snapshot.hasData) {
+                return LoggedInWidget();
+              } else {
+                return SignUpWidget();
+              }
+            }),
+      );
 }
 
 class SignUpWidget extends StatelessWidget {
@@ -56,6 +74,7 @@ class SignUpWidget extends StatelessWidget {
                   provider.googleLogin();
                 },
                 label: Text('Sign up with google')),
+            ElevatedButton(onPressed: () {}, child: Text("login in")),
           ],
         ),
       );
@@ -66,15 +85,29 @@ class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
   Future googleLogin() async {
-    final googleUser = await googleSignIn.signIn();
-    if (googleUser == null) return;
-    _user = googleUser;
-    final googleAuth = await googleUser.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+    try {
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) return;
+      _user = googleUser;
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print(e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future loggedout() async {
+    try {
+      await googleSignIn.disconnect();
+      FirebaseAuth.instance.signOut();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
