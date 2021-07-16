@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:san/main.dart';
 import 'package:location/location.dart' as l;
 import 'package:geocoding/geocoding.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'feed.dart';
 
 class LoggedInWidget extends StatefulWidget {
   const LoggedInWidget({Key? key}) : super(key: key);
@@ -14,8 +17,9 @@ class LoggedInWidget extends StatefulWidget {
 
 class _LoggedInWidgetState extends State<LoggedInWidget> {
   final user = FirebaseAuth.instance.currentUser!;
+  var loc;
+  FirebaseAuth auth = FirebaseAuth.instance;
   l.Location location = new l.Location();
-  String _output = '-----';
   var _currentAddress;
   late bool _serviceEnabled;
   late l.PermissionStatus _permissionGranted;
@@ -47,40 +51,48 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
         ],
       ),
       body: Container(
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              ElevatedButton(
-                  onPressed: () async {
-                    _serviceEnabled = await location.serviceEnabled();
-                    if (!_serviceEnabled) {
-                      _serviceEnabled = await location.requestService();
-                      if (!_serviceEnabled) {
-                        return;
-                      }
-                    }
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                _serviceEnabled = await location.serviceEnabled();
+                if (!_serviceEnabled) {
+                  _serviceEnabled = await location.requestService();
+                  if (!_serviceEnabled) {
+                    return;
+                  }
+                }
 
-                    _permissionGranted = await location.hasPermission();
-                    if (_permissionGranted == l.PermissionStatus.denied) {
-                      _permissionGranted = await location.requestPermission();
-                      if (_permissionGranted != l.PermissionStatus.granted) {
-                        return;
-                      }
-                    }
-                    _locationData = await location.getLocation();
-                    setState(() {
-                      _isGetLocation = true;
-                      _getAddressFromLatLng();
-                    });
-                  },
-                  child: Text("get location")),
-              _isGetLocation
-                  ? Text(
-                      "location : ${_locationData.latitude}/${_locationData.longitude}")
-                  : Container(),
-              if (_currentAddress != null) Text(_currentAddress),
-            ],
-          )),
+                _permissionGranted = await location.hasPermission();
+                if (_permissionGranted == l.PermissionStatus.denied) {
+                  _permissionGranted = await location.requestPermission();
+                  if (_permissionGranted != l.PermissionStatus.granted) {
+                    return;
+                  }
+                }
+                _locationData = await location.getLocation();
+                setState(() {
+                  _isGetLocation = true;
+                  _getAddressFromLatLng();
+                });
+              },
+              child: Text("get location"),
+            ),
+            _isGetLocation
+                ? Text(
+                    "location : ${_locationData.latitude}/${_locationData.longitude}")
+                : Container(),
+            if (_currentAddress != null) Text(_currentAddress),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Feed(data: loc)));
+                },
+                child: Text("go to feeds")),
+          ],
+        ),
+      ),
     );
   }
 
@@ -90,10 +102,20 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
           _locationData.latitude!, _locationData.longitude!);
 
       Placemark place = placemarks[0];
-
+      loc = place.locality;
       setState(() {
         _currentAddress =
             "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+      FirebaseFirestore.instance
+          .collection('USERS')
+          .doc('${FirebaseAuth.instance.currentUser!.uid}')
+          .set({
+        'name': user.displayName,
+        'email': user.email,
+        'addres': "${place.locality},${place.postalCode},${place.country}",
+        'timestamp': DateTime.now().toString(),
+        'userId': FirebaseAuth.instance.currentUser!.uid,
       });
     } catch (e) {
       print(e);
