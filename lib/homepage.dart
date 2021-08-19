@@ -5,6 +5,7 @@ import 'package:san/main.dart';
 import 'package:location/location.dart' as l;
 import 'package:geocoding/geocoding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'addfriends.dart';
 
 import 'feed.dart';
 
@@ -25,6 +26,7 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
   late l.PermissionStatus _permissionGranted;
   late l.LocationData _locationData;
   bool _isGetLocation = false;
+  bool _isCompleted = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +89,12 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
             ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddFriends()));
+                },
+                child: Text("add friends")),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Feed(data: loc)));
                 },
                 child: Text("go to feeds")),
@@ -110,12 +118,10 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
       FirebaseFirestore.instance
           .collection('USERS')
           .doc('${FirebaseAuth.instance.currentUser!.uid}')
-          .set({
-        'name': user.displayName,
-        'email': user.email,
-        'addres': "${place.locality},${place.postalCode},${place.country}",
-        'timestamp': DateTime.now().toString(),
-        'userId': FirebaseAuth.instance.currentUser!.uid,
+          .update({
+        'location': "${place.locality},${place.postalCode},${place.country}",
+        'timestamp_of_loc': DateTime.now().toString(),
+        'completedReg': _isCompleted.toString(),
       });
     } catch (e) {
       print(e);

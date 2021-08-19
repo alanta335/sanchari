@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -100,6 +101,26 @@ class GoogleSignInProvider extends ChangeNotifier {
       print(e.toString());
     }
     notifyListeners();
+    FirebaseFirestore.instance
+        .collection('USERS')
+        .doc('${FirebaseAuth.instance.currentUser!.uid}')
+        .collection('FRIENDS')
+        .doc('NO_OF_FRIENDS')
+        .set({'no': 0});
+    FirebaseFirestore.instance
+        .collection('USERS')
+        .doc('${FirebaseAuth.instance.currentUser!.uid}')
+        .set({
+      'name': FirebaseAuth.instance.currentUser!.displayName,
+      'email': FirebaseAuth.instance.currentUser!.email,
+      'location': "null",
+      'timestamp_of_reg': DateTime.now().toString(),
+      'timestamp_of_loc': 'null',
+      'userId': FirebaseAuth.instance.currentUser!.uid,
+      'completedReg': 'false',
+      'address': 'null',
+      'phone_no': 'null',
+    });
   }
 
   Future loggedout() async {
