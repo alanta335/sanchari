@@ -59,7 +59,7 @@ class _AddFriendsState extends State<AddFriends> {
                       .collection('FRIENDS')
                       .doc('${addFriendIdController.text}')
                       .set({
-                    'un_id': user['useId'],
+                    'un_id': user['userId'],
                     'name': user['name'],
                     'email': user['email'],
                     'ph_no': user['phone_no'],

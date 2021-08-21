@@ -6,7 +6,7 @@ import 'package:location/location.dart' as l;
 import 'package:geocoding/geocoding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'addfriends.dart';
-import 'ViewFriends.dart';
+import 'viewFriends.dart';
 import 'feed.dart';
 
 class LoggedInWidget extends StatefulWidget {

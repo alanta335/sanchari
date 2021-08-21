@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ViewFriends extends StatefulWidget {
@@ -57,11 +57,54 @@ class _ViewFriendsState extends State<ViewFriends> {
             cacheExtent: 300,
             reverse: false,
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              return Card(
-                child: ListTile(
-                  title: Text('${document.get('name')}'),
-                  subtitle: Text(
-                      'Phone Number:${document.get('phno')} \nEmail: ${document.get('email')}'),
+              if (document.id == "NO_OF_FRIENDS") {
+                return Card(
+                  child: ListTile(
+                    title: Text('NO OF FRIENDS: ${document.get('no')}'),
+                  ),
+                );
+              }
+              return ElevatedButton(
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent),
+                ),
+                onPressed: () {},
+                onLongPress: () {
+                  Alert(
+                    context: context,
+                    title: "ADD to emergency contact list?",
+                    buttons: [
+                      DialogButton(
+                        onPressed: () async {
+                          FirebaseFirestore.instance
+                              .collection('USERS')
+                              .doc('${FirebaseAuth.instance.currentUser!.uid}')
+                              .collection('EME_FR')
+                              .doc('${document.id}')
+                              .set({});
+                          Navigator.pop(context);
+                        },
+                        child: Text("Yes"),
+                      ),
+                      DialogButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("No"),
+                      )
+                    ],
+                  ).show();
+                },
+                child: Expanded(
+                  child: Card(
+                    child: ListTile(
+                      title: Text('${document.get('name')}'),
+                      subtitle: Text(
+                          'Phone Number:${document.get('ph_no')} \nEmail: ${document.get('email')}'),
+                    ),
+                  ),
                 ),
               );
             }).toList(),
