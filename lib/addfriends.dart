@@ -49,12 +49,21 @@ class _AddFriendsState extends State<AddFriends> {
                       .collection('FRIENDS')
                       .doc('NO_OF_FRIENDS')
                       .update({'no': i});
+                  DocumentSnapshot user = await FirebaseFirestore.instance
+                      .collection('USERS')
+                      .doc('${addFriendIdController.text}')
+                      .get();
                   FirebaseFirestore.instance
                       .collection('USERS')
                       .doc('${FirebaseAuth.instance.currentUser!.uid}')
                       .collection('FRIENDS')
                       .doc('${addFriendIdController.text}')
-                      .set({});
+                      .set({
+                    'un_id': user['useId'],
+                    'name': user['name'],
+                    'email': user['email'],
+                    'ph_no': user['phone_no'],
+                  });
                   noOfFriends = await FirebaseFirestore.instance
                       .collection('USERS')
                       .doc('${addFriendIdController.text}')
@@ -74,7 +83,12 @@ class _AddFriendsState extends State<AddFriends> {
                       .doc('${addFriendIdController.text}')
                       .collection('FRIENDS')
                       .doc('${FirebaseAuth.instance.currentUser!.uid}')
-                      .set({});
+                      .set({
+                    'un_id': FirebaseAuth.instance.currentUser!.uid,
+                    'name': FirebaseAuth.instance.currentUser!.displayName,
+                    'email': FirebaseAuth.instance.currentUser!.email,
+                    'ph_no': FirebaseAuth.instance.currentUser!.phoneNumber
+                  });
                   setState(() {
                     addSuccess = 'add friend successfully';
                   });

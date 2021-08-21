@@ -6,7 +6,7 @@ import 'package:location/location.dart' as l;
 import 'package:geocoding/geocoding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'addfriends.dart';
-
+import 'ViewFriends.dart';
 import 'feed.dart';
 
 class LoggedInWidget extends StatefulWidget {
@@ -92,6 +92,12 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                       MaterialPageRoute(builder: (context) => AddFriends()));
                 },
                 child: Text("add friends")),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ViewFriends()));
+                },
+                child: Text("View Friends")),
             ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
