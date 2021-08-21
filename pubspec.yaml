@@ -29,7 +29,6 @@ dependencies:
   font_awesome_flutter:
   provider:
   location:
-  rflutter_alert:
   geocoding:
   cloud_firestore:
   rflutter_alert:
