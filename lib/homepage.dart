@@ -227,7 +227,7 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
               {
                 'name': FirebaseAuth.instance.currentUser!.displayName,
                 'id': FirebaseAuth.instance.currentUser!.uid,
-                'timestamp_of_req': DateTime.now().toString(),
+                'timestamp_of_req': DateTime.now().toString().substring(0, 16),
                 'loc_of_req':
                     "${_locationData.latitude},${_locationData.longitude}",
                 'approx_loc':
