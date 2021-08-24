@@ -62,7 +62,7 @@ class _AddFriendsState extends State<AddFriends> {
                     'un_id': user['userId'],
                     'name': user['name'],
                     'email': user['email'],
-                    'ph_no': user['phone_no'],
+                    'ph_no': "",
                   });
                   noOfFriends = await FirebaseFirestore.instance
                       .collection('USERS')
@@ -87,7 +87,7 @@ class _AddFriendsState extends State<AddFriends> {
                     'un_id': FirebaseAuth.instance.currentUser!.uid,
                     'name': FirebaseAuth.instance.currentUser!.displayName,
                     'email': FirebaseAuth.instance.currentUser!.email,
-                    'ph_no': FirebaseAuth.instance.currentUser!.phoneNumber
+                    'ph_no': ""
                   });
                   setState(() {
                     addSuccess = 'add friend successfully';
