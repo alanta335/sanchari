@@ -16,7 +16,7 @@ class _SosMessageState extends State<SosMessage> {
         .collection('USERS')
         .doc('${FirebaseAuth.instance.currentUser!.uid}')
         .collection('SOS')
-        .orderBy('time', descending: true);
+        .orderBy('timestamp_of_req', descending: true);
     print(users.toString());
     return StreamBuilder<QuerySnapshot>(
       stream: users.snapshots(),
@@ -45,9 +45,9 @@ class _SosMessageState extends State<SosMessage> {
               print('${document.data().toString()}');
               return Card(
                 child: ListTile(
-                  title: Text('${document.data().toString()}'),
+                  title: Text('${document.get('name')}'),
                   subtitle: Text(
-                      'Current Location : ${document.get('approx_loc')}\nAccurate Location on ${document.get('loc_of_req')}'),
+                      'Current Location : ${document.get('approx_loc')}\nAccurate Location: ${document.get('loc_of_req')}'),
                   trailing: Text(
                       'Time of SOS Call:${document.get('timestamp_of_req')}'),
                   isThreeLine: true,
