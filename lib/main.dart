@@ -120,6 +120,7 @@ class GoogleSignInProvider extends ChangeNotifier {
       'completedReg': 'false',
       'address': 'null',
       'phone_no': 'null',
+      'sos': "false",
     });
   }
 
