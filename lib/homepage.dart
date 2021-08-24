@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:core';
-
+import 'sosmessage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +8,7 @@ import 'package:san/main.dart';
 import 'package:location/location.dart' as l;
 import 'package:geocoding/geocoding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:san/sosmessage.dart';
 import 'addfriends.dart';
 import 'dircontact.dart';
 import 'viewFriends.dart';
@@ -33,6 +34,7 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
   late Placemark place_sos;
   bool _isGetLocation = false;
   bool _isCompleted = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,11 +144,16 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
               },
               child: Text("send s0s message"),
             ),
-            Card(
-              child: ListTile(
-                title: Text('SOS MESSAGE'),
-                subtitle: Text(''),
-              ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SosMessage(),
+                  ),
+                );
+              },
+              child: Text("see sos message"),
             ),
           ],
         ),
