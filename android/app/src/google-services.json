@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "658814507954-hk2r3aokmq5isd6ifcgptoeabqc721fm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sanchari.app",
+            "certificate_hash": "b6fc9b45084662b9f48105a711962a83e9070dc2"
+          }
+        },
+        {
+          "client_id": "658814507954-p1h4onlbobmi9pm90osvjoge9sj47b9c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sanchari.app",
+            "certificate_hash": "bf544621b720ec3fd0d4c9463a07c549bbb550a3"
+          }
+        },
+        {
           "client_id": "658814507954-mqbq5vqpd1k3nbdht70i1eg7r9ptv9k2.apps.googleusercontent.com",
           "client_type": 3
         }
