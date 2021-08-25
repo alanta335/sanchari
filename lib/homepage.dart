@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'map.dart';
 import 'sosmessage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -154,6 +155,19 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                 );
               },
               child: Text("see sos message"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapScreen(
+                        lat: _locationData.latitude,
+                        long: _locationData.longitude),
+                  ),
+                );
+              },
+              child: Text("map"),
             ),
           ],
         ),
