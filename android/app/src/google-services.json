@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "658814507954-hk2r3aokmq5isd6ifcgptoeabqc721fm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sanchari.app",
+            "certificate_hash": "b6fc9b45084662b9f48105a711962a83e9070dc2"
+          }
+        },
+        {
           "client_id": "658814507954-p1h4onlbobmi9pm90osvjoge9sj47b9c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
