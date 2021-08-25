@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-
+import 'package:san/login.dart';
 import 'homepage.dart';
 
 Future main() async {
@@ -52,32 +52,9 @@ class _MYHomePageState extends State<MYHomePage> {
               } else if (snapshot.hasData) {
                 return LoggedInWidget();
               } else {
-                return SignUpWidget();
+                return Signup();
               }
             }),
-      );
-}
-
-class SignUpWidget extends StatelessWidget {
-  const SignUpWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton.icon(
-                icon: FaIcon(FontAwesomeIcons.google),
-                onPressed: () {
-                  final provider =
-                      Provider.of<GoogleSignInProvider>(context, listen: false);
-                  provider.googleLogin();
-                },
-                label: Text('Sign up with google')),
-            ElevatedButton(onPressed: () {}, child: Text("login in")),
-          ],
-        ),
       );
 }
 
