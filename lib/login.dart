@@ -15,77 +15,26 @@ class _SignupState extends State<Signup> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Color.fromRGBO(250, 250, 250, 1),
       body: Stack(
         children: [
-          Container(
-            height: height,
-            width: width,
-            color: Colors.black,
-            child: Image(image: AssetImage('images/bg.png'), fit: BoxFit.cover),
-          ),
           Positioned(
             top: width * -.2,
             left: width * -.18,
             child: Container(
-              child: Container(
-                margin: EdgeInsets.only(
-                  top: width * .30,
-                  left: width * .27,
-                ),
-                child: Text(
-                  'Welcome \nBack!',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold,
-                    fontSize: width * .08,
-                  ),
+              margin: EdgeInsets.only(
+                top: width * .30,
+                left: width * .27,
+              ),
+              child: Text(
+                'Welcome \nBack!',
+                style: TextStyle(
+                  color: Color.fromRGBO(37, 36, 39, 1),
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.bold,
+                  fontSize: width * .08,
                 ),
               ),
-              height: width * .75,
-              width: width * .75,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(200),
-                  gradient: LinearGradient(colors: [
-                    Color.fromRGBO(65, 54, 241, 1),
-                    Color.fromRGBO(135, 67, 255, 0.09)
-                  ], stops: [
-                    0.0,
-                    1.0
-                  ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
-            ),
-          ),
-          Positioned(
-            bottom: width * -.45,
-            left: width * .175,
-            child: Container(
-              child: Container(
-                margin: EdgeInsets.only(
-                  bottom: width * .42,
-                ),
-                child: Center(
-                  child: Text(
-                    'Back',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.normal,
-                      fontSize: width * .03,
-                    ),
-                  ),
-                ),
-              ),
-              height: width * .65,
-              width: width * .65,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(200),
-                  gradient: LinearGradient(colors: [
-                    Color.fromRGBO(255, 0, 92, 1),
-                    Color.fromRGBO(89, 78, 243, 0.22)
-                  ], stops: [
-                    0.0,
-                    1.0
-                  ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
             ),
           ),
           Form(
@@ -98,26 +47,32 @@ class _SignupState extends State<Signup> {
                   Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(13, 13, 13, 1),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, .2),
+                          blurRadius: 20.0,
+                        )
+                      ],
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         style: TextStyle(
-                          color: Color.fromRGBO(103, 103, 103, 1),
+                          color: Color.fromRGBO(148, 153, 162, 1),
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.person,
-                            color: Color.fromRGBO(103, 103, 103, 1),
+                            color: Color.fromRGBO(148, 153, 162, 1),
                           ),
                           hintText: 'Username or email',
-                          fillColor: Color.fromRGBO(13, 13, 13, 1),
+                          fillColor: Colors.white,
                           filled: true,
                           hintStyle: TextStyle(
-                            color: Color.fromRGBO(103, 103, 103, 1),
+                            color: Color.fromRGBO(148, 153, 162, 1),
                           ),
                         ),
                         validator: (val) {
@@ -140,30 +95,36 @@ class _SignupState extends State<Signup> {
                   Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(13, 13, 13, 1),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, .2),
+                          blurRadius: 20.0,
+                        )
+                      ],
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         style: TextStyle(
-                          color: Color.fromRGBO(103, 103, 103, 1),
+                          color: Color.fromRGBO(148, 153, 162, 1),
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.lock,
-                            color: Color.fromRGBO(103, 103, 103, 1),
+                            color: Color.fromRGBO(148, 153, 162, 1),
                           ),
                           suffixIcon: Icon(
                             Icons.visibility,
-                            color: Color.fromRGBO(103, 103, 103, 1),
+                            color: Color.fromRGBO(148, 153, 162, 1),
                           ),
                           hintText: 'Password',
-                          fillColor: Color.fromRGBO(13, 13, 13, 1),
+                          fillColor: Colors.white,
                           filled: true,
                           hintStyle: TextStyle(
-                            color: Color.fromRGBO(103, 103, 103, 1),
+                            color: Color.fromRGBO(148, 153, 162, 1),
                           ),
                         ),
                         validator: (val) {
@@ -187,7 +148,7 @@ class _SignupState extends State<Signup> {
                     margin: EdgeInsets.only(left: width * .5),
                     child: Text(
                       'Forgot password?',
-                      style: TextStyle(color: Color.fromRGBO(135, 67, 255, 1)),
+                      style: TextStyle(color: Color.fromRGBO(148, 153, 162, 1)),
                     ),
                   ),
                   SizedBox(
@@ -200,23 +161,20 @@ class _SignupState extends State<Signup> {
                         child: Text(
                       'Sign In',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Color.fromRGBO(148, 153, 162, 1),
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500),
                     )),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        gradient: LinearGradient(
-                            colors: [
-                              Color.fromRGBO(135, 67, 255, 1),
-                              Color.fromRGBO(65, 54, 241, 1)
-                            ],
-                            stops: [
-                              0.0,
-                              1.0
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight)),
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, .2),
+                          blurRadius: 20.0,
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 70,
@@ -244,7 +202,7 @@ class _SignupState extends State<Signup> {
                         child: Container(
                           child: CircleAvatar(
                             child: Padding(
-                              padding: const EdgeInsets.all(6),
+                              padding: const EdgeInsets.all(7.3),
                               child: Image(
                                 image: AssetImage('images/google.png'),
                               ),
@@ -259,7 +217,7 @@ class _SignupState extends State<Signup> {
                         child: Container(
                           child: CircleAvatar(
                             child: Padding(
-                              padding: const EdgeInsets.all(6),
+                              padding: const EdgeInsets.all(7.2),
                               child: Image(
                                 image: AssetImage('images/apple.png'),
                               ),
@@ -274,7 +232,7 @@ class _SignupState extends State<Signup> {
                         child: Container(
                           child: CircleAvatar(
                             child: Padding(
-                              padding: const EdgeInsets.all(6),
+                              padding: const EdgeInsets.all(7.2),
                               child: Image(
                                 image: AssetImage('images/facebook.png'),
                               ),
