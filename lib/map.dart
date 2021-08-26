@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as l;
@@ -50,22 +52,64 @@ class _MapScreenState extends State<MapScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(onPressed: () async {
+        _firLoc();
         //_locationData = await location.getLocation();
         _controller.animateCamera(
           CameraUpdate.newCameraPosition(
-              CameraPosition(target: LatLng(la, lo), zoom: 16)),
+              CameraPosition(target: LatLng(la, lo), zoom: 9)),
         );
       }),
     );
   }
 
   void addMarker(cordinates) {
+    print(cordinates);
     setState(() {
       markers.add(
         Marker(
           position: cordinates,
           markerId: MarkerId('orgin'),
           infoWindow: InfoWindow(title: 'origin', snippet: 'starting position'),
+        ),
+      );
+    });
+  }
+
+  _firLoc() async {
+    Stream<QuerySnapshot> snap = FirebaseFirestore.instance
+        .collection("USERS")
+        .doc('${FirebaseAuth.instance.currentUser!.uid}')
+        .collection("FRIENDS")
+        .snapshots();
+    snap.forEach(
+      (field) {
+        field.docs.asMap().forEach(
+          (index, data) async {
+            print('${data.id}-----------');
+            if (data.id.toString() != 'NO_OF_FRIENDS') {
+              DocumentSnapshot user = await FirebaseFirestore.instance
+                  .collection('USERS')
+                  .doc('${data.id}')
+                  .get();
+              double lati = double.parse(user['lat']);
+              double longi = double.parse(user['long']);
+              addMarkerOfFriends(data.id, lati, longi, user['name'].toString(),
+                  user['location'].toString());
+            }
+          },
+        );
+      },
+    );
+  }
+
+  void addMarkerOfFriends(
+      String id, double lat, double long, String name, String loc) {
+    setState(() {
+      markers.add(
+        Marker(
+          position: LatLng(lat, long),
+          markerId: MarkerId('$id'),
+          infoWindow: InfoWindow(title: '$name', snippet: '$loc'),
         ),
       );
     });

@@ -23,32 +23,18 @@ class _ViewFriendsState extends State<ViewFriends> {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           print("Erroor fetching");
-          //   Alert(
-          //           context: context,
-          //           closeFunction: () {
-          //             Navigator.push(
-          //                 context,
-          //                 MaterialPageRoute(
-          //                     builder: (context) => UserInformation()));
-          //           },
-          //           title: "Error!",
-          //           style: alertStyle,
-          //           desc: "Failed to load data. Try again!")
-          //       .show();
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             body: SafeArea(
               child: Center(
                 child: Text("Waiting to get data...."),
-                // SpinKitRing(color: Colors.deepPurple.shade400, size: 100),
               ),
             ),
           );
         }
 
         return Scaffold(
-          //drawer: new CmnDrawer(),
           appBar: AppBar(
             title: Text('Friend list'),
           ),

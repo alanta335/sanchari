@@ -192,6 +192,8 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
           .doc('${FirebaseAuth.instance.currentUser!.uid}')
           .update({
         'location': "${place.locality},${place.postalCode},${place.country}",
+        'lat': '${_locationData.latitude}',
+        'long': '${_locationData.longitude}',
         'timestamp_of_loc': DateTime.now().toString(),
         'completedReg': _isCompleted.toString(),
       });
