@@ -44,10 +44,9 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                 return Card();
               }
               return ElevatedButton(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.all(0)),
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  elevation: 0,
                 ),
                 onPressed: () {},
                 onLongPress: () {
@@ -76,11 +75,67 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                     ],
                   ).show();
                 },
-                child: Card(
-                  child: ListTile(
-                    title: Text('${document.get('name')}'),
-                    subtitle: Text(
-                        'Phone Number:${document.get('ph_no')} \nEmail: ${document.get('email')}'),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20.0, top: 10, bottom: 10),
+                  child: Container(
+                    height: 70,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, .2),
+                          blurRadius: 20.0,
+                        )
+                      ],
+                    ),
+                    child: Center(
+                      child: ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.white,
+                                  child: Image(
+                                    image: AssetImage('images/google.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  '${document.get('name')}',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'SFProDisplay'),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.white,
+                                  child: Image(
+                                    image: AssetImage('images/chat1.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               );
