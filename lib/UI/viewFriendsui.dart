@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ViewFriends extends StatefulWidget {
-  const ViewFriends({Key? key}) : super(key: key);
+class ViewFriendsUI extends StatefulWidget {
+  const ViewFriendsUI({Key? key}) : super(key: key);
 
   @override
-  _ViewFriendsState createState() => _ViewFriendsState();
+  _ViewFriendsUIState createState() => _ViewFriendsUIState();
 }
 
-class _ViewFriendsState extends State<ViewFriends> {
+class _ViewFriendsUIState extends State<ViewFriendsUI> {
   @override
   Widget build(BuildContext context) {
     Query users = FirebaseFirestore.instance
@@ -41,11 +41,7 @@ class _ViewFriendsState extends State<ViewFriends> {
             reverse: false,
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               if (document.id == "NO_OF_FRIENDS") {
-                return Card(
-                  child: ListTile(
-                    title: Text('NO OF FRIENDS: ${document.get('no')}'),
-                  ),
-                );
+                return Card();
               }
               return ElevatedButton(
                 style: ButtonStyle(
