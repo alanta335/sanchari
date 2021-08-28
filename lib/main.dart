@@ -5,8 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:san/UI/homescreen.dart';
-import 'package:san/UI/login.dart';
+import 'package:san/login.dart';
 import 'homepage.dart';
 
 Future main() async {
@@ -51,7 +50,7 @@ class _MYHomePageState extends State<MYHomePage> {
                   child: Text("error"),
                 );
               } else if (snapshot.hasData) {
-                return HomeScreen();
+                return LoggedInWidget();
               } else {
                 return Signup();
               }

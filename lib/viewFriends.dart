@@ -35,6 +35,9 @@ class _ViewFriendsState extends State<ViewFriends> {
         }
 
         return Scaffold(
+          appBar: AppBar(
+            title: Text('Friend list'),
+          ),
           body: ListView(
             addAutomaticKeepAlives: false,
             cacheExtent: 300,
@@ -80,11 +83,13 @@ class _ViewFriendsState extends State<ViewFriends> {
                     ],
                   ).show();
                 },
-                child: Card(
-                  child: ListTile(
-                    title: Text('${document.get('name')}'),
-                    subtitle: Text(
-                        'Phone Number:${document.get('ph_no')} \nEmail: ${document.get('email')}'),
+                child: Expanded(
+                  child: Card(
+                    child: ListTile(
+                      title: Text('${document.get('name')}'),
+                      subtitle: Text(
+                          'Phone Number:${document.get('ph_no')} \nEmail: ${document.get('email')}'),
+                    ),
                   ),
                 ),
               );
