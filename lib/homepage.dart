@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:core';
-import 'package:san/news.dart';
-
 import 'map.dart';
 import 'sosmessage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -171,16 +169,6 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
               },
               child: Text("map"),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => News(locality: loc),
-                    ),
-                  );
-                },
-                child: Text("News"))
           ],
         ),
       ),
