@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -56,9 +57,7 @@ class _HomeState extends State<Home> {
               child: Container(
                 width: width * .35,
                 height: height * .75,
-                child: Image(
-                  image: AssetImage('images/sancharibg.png'),
-                ),
+                child: SvgPicture.asset('images/san.svg'),
               ),
             ),
             Positioned(
@@ -181,7 +180,7 @@ Widget _tabSection(BuildContext context) {
                     child: Text(
                       'Location',
                       style: TextStyle(
-                          fontSize: 21,
+                          fontSize: 18,
                           fontWeight: FontWeight.w800,
                           fontFamily: 'SFProDisplay'),
                     ),
@@ -190,7 +189,7 @@ Widget _tabSection(BuildContext context) {
                     child: Text(
                       'Plan',
                       style: TextStyle(
-                          fontSize: 21,
+                          fontSize: 18,
                           fontWeight: FontWeight.w800,
                           fontFamily: 'SFProDisplay'),
                     ),
@@ -199,7 +198,7 @@ Widget _tabSection(BuildContext context) {
                     child: Text(
                       'Friends',
                       style: TextStyle(
-                          fontSize: 21,
+                          fontSize: 18,
                           fontWeight: FontWeight.w800,
                           fontFamily: 'SFProDisplay'),
                     ),

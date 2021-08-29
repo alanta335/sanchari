@@ -23,10 +23,9 @@ class _MenuState extends State<Menu> {
               toolbarHeight: 300,
               title: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundImage: NetworkImage(user.photoURL!),
-                  ),
+                  ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      child: Image(image: NetworkImage(user.photoURL!))),
                   SizedBox(
                     height: 10,
                   ),

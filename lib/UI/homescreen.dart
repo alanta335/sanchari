@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:san/homepage.dart';
 import 'dash.dart';
 import 'frnds.dart';
-
 import 'mappage.dart';
 import 'menu.dart';
 import 'newsfeed.dart';
@@ -43,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            bulidNavBarItem(0, 'images/dash.png'),
-            bulidNavBarItem(1, 'images/news.png'),
-            bulidNavBarItem(2, 'images/map.png'),
-            bulidNavBarItem(3, 'images/caht.png'),
-            bulidNavBarItem(4, 'images/person.png'),
+            bulidNavBarItem(0, 'images/dash.svg'),
+            bulidNavBarItem(1, 'images/feed.svg'),
+            bulidNavBarItem(2, 'images/map.svg'),
+            bulidNavBarItem(3, 'images/four.svg'),
+            bulidNavBarItem(4, 'images/menu.svg'),
           ],
         ),
       ),
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
       child: Container(
-        height: 80,
+        height: 65,
         width: MediaQuery.of(context).size.width / 5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
@@ -77,7 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               height: 10,
             ),
-            Container(child: Image.asset(image)),
+            Padding(
+              padding: const EdgeInsets.only(),
+              child: Container(child: SvgPicture.asset(image)),
+            ),
             Container(
               height: _selected_item == index ? 10 : 0,
               width: MediaQuery.of(context).size.width * .1,
