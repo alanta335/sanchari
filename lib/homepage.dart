@@ -40,6 +40,8 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
 
   @override
   Widget build(BuildContext context) {
+    const tm = Duration(seconds: 60);
+    Timer.periodic(tm, (Timer t) => _getLoc());
     return Scaffold(
       appBar: AppBar(
         title: Text("homepage"),
@@ -185,6 +187,29 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
         ),
       ),
     );
+  }
+
+  _getLoc() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == l.PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != l.PermissionStatus.granted) {
+        return;
+      }
+    }
+    _locationData = await location.getLocation();
+    setState(() {
+      _isGetLocation = true;
+      _getAddressFromLatLng();
+    });
   }
 
   _getAddressFromLatLng() async {
