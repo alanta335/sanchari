@@ -6,7 +6,6 @@ import 'package:google_place/google_place.dart';
 import 'package:location/location.dart' as l;
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 //import 'searchbar.dart';
-import 'dart:math';
 
 class MapScreen extends StatefulWidget {
   final lat, long;
@@ -25,7 +24,7 @@ class _MapScreenState extends State<MapScreen> {
   final Set<Marker> markers = {};
   late String queryS;
   TextEditingController searchQ = TextEditingController();
-  var googlePlace = GooglePlace('AIzaSyB7cEmy6yQFIoNGtm1mGlELS_BlbC_fv8w');
+  var googlePlace = GooglePlace('AIzaSyA1bs9xDzhAEb5IpByX_-e0SzPW1QSXKQU');
   List<AutocompletePrediction> predictions = [];
   @override
   Widget build(BuildContext context) {
@@ -96,7 +95,7 @@ class _MapScreenState extends State<MapScreen> {
         axisAlignment: isPortrait ? 0.0 : -1.0,
         openAxisAlignment: 0.0,
         width: isPortrait ? 600 : 500,
-        debounceDelay: const Duration(milliseconds: 500),
+        debounceDelay: const Duration(milliseconds: 300),
         transition: CircularFloatingSearchBarTransition(),
         onQueryChanged: (query) async {
           if (query.isNotEmpty) {
@@ -173,6 +172,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void autoCompleteSearch(String value) async {
     var result = await googlePlace.autocomplete.get(value);
+
     if (result != null && result.predictions != null && mounted) {
       setState(() {
         predictions = result.predictions!;
