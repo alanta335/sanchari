@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:location/location.dart' as l;
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+
 //import 'searchbar.dart';
 
 class MapScreen extends StatefulWidget {
@@ -18,9 +20,15 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   var la, lo;
+  var result;
+  var placeId;
+  int countOfP = 0;
   l.Location location = new l.Location();
   _MapScreenState({@required this.la, @required this.lo});
   late GoogleMapController _controller;
+
+  Completer<GoogleMapController> _mapController = Completer();
+  TextEditingController searchController = new TextEditingController();
   final Set<Marker> markers = {};
   late String queryS;
   TextEditingController searchQ = TextEditingController();
@@ -44,7 +52,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void addMarker(cordinates) {
-    print(cordinates);
+    print('$cordinates----+++++++');
     setState(() {
       markers.add(
         Marker(
@@ -84,49 +92,47 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Widget floatingSearch() {
-    final isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
-    return new FloatingSearchBar(
-        hint: "Search",
-        scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-        transitionDuration: const Duration(milliseconds: 800),
-        transitionCurve: Curves.easeInOut,
-        physics: const BouncingScrollPhysics(),
-        axisAlignment: isPortrait ? 0.0 : -1.0,
-        openAxisAlignment: 0.0,
-        width: isPortrait ? 600 : 500,
-        debounceDelay: const Duration(milliseconds: 300),
-        transition: CircularFloatingSearchBarTransition(),
-        onQueryChanged: (query) async {
-          if (query.isNotEmpty) {
-            autoCompleteSearch(query);
-          } else {
-            if (predictions.length > 0 && mounted) {
-              setState(() {
-                predictions = [];
-              });
-            }
-          }
-        },
-        builder: (context, transistion) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Material(
-              color: Colors.white,
-              elevation: 4.0,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: predictions.map((
-                  index,
-                ) {
-                  return Container(
-                    child: Text(index.description!),
-                  );
-                }).toList(),
-              ),
-            ),
-          );
-        });
+    return Column(
+      children: [
+        SizedBox(
+          height: 30,
+        ),
+        TextField(
+          onSubmitted: (value) {
+            _goToPlace(placeId);
+          },
+          controller: searchController,
+          decoration: InputDecoration(
+            suffixIcon: Icon(Icons.search),
+            hintText: 'search',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) {
+            autoCompleteSearch(value);
+          },
+        ),
+        Container(
+          height: 300.0,
+          child: ListView.builder(
+            itemCount: countOfP,
+            itemBuilder: (context, index) {
+              return ListTile(
+                  title: Text('${predictions.elementAt(index).description}'),
+                  onTap: () {
+                    searchController.text =
+                        predictions.elementAt(index).description!;
+                    setState(() {
+                      countOfP = 0;
+                      placeId = predictions.elementAt(index).placeId;
+                      print(placeId);
+                      _goToPlace(placeId);
+                    });
+                  });
+            },
+          ),
+        ),
+      ],
+    );
   }
 
   Widget buildMaps() {
@@ -171,13 +177,25 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void autoCompleteSearch(String value) async {
-    var result = await googlePlace.autocomplete.get(value);
+    result = await googlePlace.autocomplete.get(value);
 
     if (result != null && result.predictions != null && mounted) {
       setState(() {
         predictions = result.predictions!;
         print(predictions);
       });
+      predictions.map((
+        index,
+      ) {
+        countOfP++;
+      }).toList();
     }
+  }
+
+  Future<void> _goToPlace(dynamic placeId) async {
+    var result2 = await googlePlace.details.get("$placeId");
+    _controller.animateCamera(CameraUpdate.newLatLng(LatLng(
+        result2!.result!.geometry!.location!.lat!,
+        result2.result!.geometry!.location!.lng!)));
   }
 }
