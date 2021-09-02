@@ -36,7 +36,6 @@ dependencies:
   flutter_polyline_points:
   google_maps_flutter:
   google_place:
-  material_floating_search_bar:
   news_api_flutter_package:
   flutter_svg:  
   

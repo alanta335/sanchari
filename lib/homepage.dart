@@ -40,7 +40,7 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
 
   @override
   Widget build(BuildContext context) {
-    const tm = Duration(seconds: 10);
+    const tm = Duration(seconds: 60);
     Timer.periodic(tm, (Timer t) => _getLoc());
     return Scaffold(
       appBar: AppBar(
