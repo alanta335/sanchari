@@ -198,6 +198,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  google_maps_routes:
+    dependency: "direct main"
+    description:
+      name: google_maps_routes
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   google_place:
     dependency: "direct main"
     description:

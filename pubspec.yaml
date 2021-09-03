@@ -37,7 +37,8 @@ dependencies:
   google_maps_flutter:
   google_place:
   news_api_flutter_package:
-  flutter_svg:  
+  flutter_svg:
+  google_maps_routes:  
   
 
 
