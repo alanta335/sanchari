@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:news_api_flutter_package/news_api_flutter_package.dart';
 
 class News2 extends StatefulWidget {
-  final String locality;
+  var locality;
   News2({required this.locality});
 
   @override
@@ -14,44 +14,12 @@ class News2 extends StatefulWidget {
 }
 
 class _News2State extends State<News2> {
-  String loc;
+  var loc;
   _News2State({required this.loc});
   final NewsAPI _newsAPI = NewsAPI("907069a2ed944b1990928eaa4b57081d");
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: TabBar(
-                  indicatorColor: Colors.white,
-                  unselectedLabelColor: Colors.grey,
-                  labelColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  tabs: [
-                    Tab(text: "general news"),
-                    Tab(text: "travel news"),
-                  ]),
-            ),
-          ),
-          Expanded(
-            flex: 11,
-            child: Container(
-              //Add this to give height
-              height: MediaQuery.of(context).size.height * 3,
-              child: TabBarView(children: [
-                _buildTopHeadlinesTabView(),
-                _buildEverythingTabView(),
-              ]),
-            ),
-          ),
-        ],
-      ),
-    );
+    return _buildEverythingTabView();
   }
 
   Widget _buildTopHeadlinesTabView() {

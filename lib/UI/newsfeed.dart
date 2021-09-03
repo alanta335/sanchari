@@ -8,77 +8,32 @@ import 'package:geocoding/geocoding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:san/news2.dart';
+import 'package:san/weatherUI.dart';
+import 'homescreen.dart';
+import 'package:weather/weather.dart';
 
 class Newsfeed extends StatefulWidget {
+  var locality;
+
+  Newsfeed({required this.locality});
   @override
-  _NewsfeedState createState() => _NewsfeedState();
+  _NewsfeedState createState() => _NewsfeedState(loc: locality);
 }
 
 class _NewsfeedState extends State<Newsfeed> {
   var loc;
-  l.Location location = new l.Location();
-  var _currentAddress;
-  late bool _serviceEnabled;
-  late l.PermissionStatus _permissionGranted;
-  late l.LocationData _locationData;
-  late Placemark place_sos;
-  bool _isGetLocation = false;
-  FirebaseAuth auth = FirebaseAuth.instance;
-  bool _isCompleted = false;
-
-  Future getloc() async {
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == l.PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != l.PermissionStatus.granted) {
-        return;
-      }
-    }
-    _locationData = await location.getLocation();
-    setState(() {
-      _isGetLocation = true;
-      _getAddressFromLatLng();
-    });
+  WeatherFactory wf = new WeatherFactory("f6f05e62a44e4f9ba8eb4b805ef44e74");
+  void queryWeather() async {
+    Weather w = await wf.currentWeatherByCityName(loc);
+    print(w.tempMax);
   }
 
-  _getAddressFromLatLng() async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          _locationData.latitude!, _locationData.longitude!);
-
-      Placemark place = placemarks[0];
-      place_sos = place;
-      loc = place.locality;
-      setState(() {
-        _currentAddress =
-            "${place.locality}, ${place.postalCode}, ${place.country}";
-      });
-      FirebaseFirestore.instance
-          .collection('USERS')
-          .doc('${FirebaseAuth.instance.currentUser!.uid}')
-          .update({
-        'location': "${place.locality},${place.postalCode},${place.country}",
-        'lat': '${_locationData.latitude}',
-        'long': '${_locationData.longitude}',
-        'timestamp_of_loc': DateTime.now().toString(),
-        'completedReg': _isCompleted.toString(),
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
+  _NewsfeedState({required this.loc});
+  final HomeScreen news = new HomeScreen();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    queryWeather();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -116,8 +71,8 @@ class _NewsfeedState extends State<Newsfeed> {
             )),
         backgroundColor: Colors.white,
         body: TabBarView(children: [
-          Text('hhjfsdkhfjsk'),
-          News2(locality: 'america'),
+          Weatherui(locality: loc),
+          News2(locality: loc),
         ]),
       ),
     );
