@@ -16,13 +16,21 @@ class Weatherui extends StatefulWidget {
 class _WeatheruiState extends State<Weatherui> {
   _WeatheruiState({required this.loc});
   var loc;
+  String area = '';
+  String temp = '';
+  String we = '';
+  bool a = true;
+
   List<Weather> _data = [];
   WeatherFactory wf = new WeatherFactory("f6f05e62a44e4f9ba8eb4b805ef44e74");
 
-  Future<Weather> queryWeather() async {
+  void queryWeather() async {
     Weather w = await wf.currentWeatherByCityName(loc);
     print(w.areaName);
-    return w;
+    setState(() {
+      area = w.areaName!;
+      temp = w.temperature.toString();
+    });
   }
 
   void fivedayWeather() async {
@@ -35,8 +43,10 @@ class _WeatheruiState extends State<Weatherui> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    w = queryWeather();
-    fivedayWeather();
+    if (area == '') {
+      queryWeather();
+      fivedayWeather();
+    }
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,10 +63,7 @@ class _WeatheruiState extends State<Weatherui> {
             height: height * 0.2,
             child: Row(
               children: <Widget>[
-                Text(_data.first.areaName!),
-                BoxedIcon(
-                  WeatherIcons.cloudy,
-                ),
+                Text(area + temp),
               ],
             ),
           ),
