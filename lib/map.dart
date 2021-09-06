@@ -22,6 +22,8 @@ class _MapScreenState extends State<MapScreen> {
   var result;
   var placeId;
   int m = 0;
+  var cordinates2;
+  var result3;
   bool show = false;
   int countOfP = 0;
   List<LatLng> points = [];
@@ -77,7 +79,20 @@ class _MapScreenState extends State<MapScreen> {
                 child: Text('clean routes'),
               ),
               ElevatedButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  FirebaseFirestore.instance
+                      .collection('USERS')
+                      .doc('${FirebaseAuth.instance.currentUser!.uid}')
+                      .collection('TRIP')
+                      .doc()
+                      .set({
+                    'name': result3!.result!.name!,
+                    'placeId': placeId,
+                    'lat': result3!.result!.geometry!.location!.lat!,
+                    'lng': result3!.result!.geometry!.location!.lng!,
+                    'added_time': DateTime.now().toString().substring(0, 16),
+                  });
+                },
                 child: Text('add to trip'),
               ),
             ],
@@ -149,8 +164,14 @@ class _MapScreenState extends State<MapScreen> {
           height: 30,
         ),
         TextField(
-          onSubmitted: (value) {
+          onSubmitted: (value) async {
             _goToPlace(placeId);
+            setState(() async {
+              result3 = await googlePlace.details.get("$placeId");
+              cordinates2 = LatLng(result3!.result!.geometry!.location!.lat!,
+                  result3.result!.geometry!.location!.lng!);
+              addMarker(cordinates2);
+            });
           },
           controller: searchController,
           decoration: InputDecoration(

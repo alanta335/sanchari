@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'package:san/news.dart';
+import 'package:san/trip.dart';
 
 import 'map.dart';
 import 'sosmessage.dart';
@@ -182,7 +183,17 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                     ),
                   );
                 },
-                child: Text("News"))
+                child: Text("News")),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Trip(),
+                    ),
+                  );
+                },
+                child: Text("view trip")),
           ],
         ),
       ),
