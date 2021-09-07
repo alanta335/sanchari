@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:san/UI/homescreen.dart';
 import 'package:san/UI/login.dart';
+import 'package:san/splash.dart';
 import 'homepage.dart';
 
 Future main() async {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:san/trip.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -7,6 +9,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final user = FirebaseAuth.instance.currentUser!;
+  var loc;
+  FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -14,13 +19,11 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: Container(
-        width: 90,
+        width: 120,
         child: Drawer(
           elevation: 0,
           child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
-                color: Color.fromRGBO(37, 36, 39, 1)),
+            decoration: BoxDecoration(color: Color.fromRGBO(37, 36, 39, 1)),
             padding: EdgeInsets.only(top: 20),
             child: SingleChildScrollView(
               child: Column(
@@ -89,7 +92,7 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hey Sarah!',
+                    'Hey ' + user.displayName!,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 25,
@@ -136,7 +139,7 @@ class _HomeState extends State<Home> {
                       height: 5,
                     ),
                     Text(
-                      'Hey Sarah!',
+                      'Trip Name',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 25,
@@ -212,9 +215,7 @@ Widget _tabSection(BuildContext context) {
             //Add this to give height
             height: MediaQuery.of(context).size.height * 3,
             child: TabBarView(children: [
-              Container(
-                child: Text("Home Body"),
-              ),
+              Trip(),
               Container(
                 child: Text("Articles Body"),
               ),

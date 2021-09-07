@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:san/homepage.dart';
+import 'package:san/map.dart';
 import 'package:san/news.dart';
 import 'package:san/news2.dart';
 import 'dash.dart';
@@ -14,41 +15,47 @@ import 'package:geocoding/geocoding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+var loc;
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-var loc;
+var la;
+var lo;
 
 class _HomeScreenState extends State<HomeScreen> {
+  late l.LocationData _locationData;
+
   FirebaseAuth auth = FirebaseAuth.instance;
   l.Location location = new l.Location();
+  final HomeScr = HomeScreen();
   var _currentAddress;
   late bool _serviceEnabled;
   late l.PermissionStatus _permissionGranted;
-  late l.LocationData _locationData;
+
   late Placemark place_sos;
   bool _isGetLocation = false;
   bool _isCompleted = false;
   int _selected_item = 0;
-  List<Widget> _widgetchoose = <Widget>[
-    Home(),
-    Newsfeed(locality: loc),
-    Map(),
-    LoggedInWidget(),
-    Menu()
-  ];
+  double latt = 0;
   @override
   Widget build(BuildContext context) {
+    List<Widget> _widgetchoose = <Widget>[
+      Home(),
+      Newsfeed(locality: loc),
+      MapScreen(lat: la, long: lo),
+      LoggedInWidget(),
+      Menu()
+    ];
+    print(loc);
     return Scaffold(
       backgroundColor: Colors.white,
       body: _widgetchoose.elementAt(_selected_item),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(50), topRight: Radius.circular(50)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -77,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
     String image,
   ) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         setState(() {
           for (int i = 0; i <= 1; i++) {
             _getLoc();
@@ -85,14 +92,12 @@ class _HomeScreenState extends State<HomeScreen> {
           if (_selected_item == 1) {}
           _selected_item = index;
         });
+        await Future.delayed(Duration(seconds: 5));
+        print("$la");
       },
       child: Container(
         height: 65,
         width: MediaQuery.of(context).size.width / 5,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: Colors.transparent,
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -134,8 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
     }
-    _locationData = await location.getLocation();
-    setState(() {
+    setState(() async {
+      _locationData = await location.getLocation();
+
+      la = _locationData.latitude!;
+      lo = _locationData.longitude!;
       _isGetLocation = true;
       _getAddressFromLatLng();
     });

@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:san/news.dart';
-import 'package:news_api_flutter_package/model/article.dart';
-import 'package:news_api_flutter_package/model/error.dart';
-import 'package:news_api_flutter_package/model/source.dart';
-import 'package:location/location.dart' as l;
-import 'package:geocoding/geocoding.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:san/news2.dart';
 import 'package:san/weatherUI.dart';
 import 'homescreen.dart';
@@ -23,17 +16,13 @@ class Newsfeed extends StatefulWidget {
 class _NewsfeedState extends State<Newsfeed> {
   var loc;
   WeatherFactory wf = new WeatherFactory("f6f05e62a44e4f9ba8eb4b805ef44e74");
-  void queryWeather() async {
-    Weather w = await wf.currentWeatherByCityName(loc);
-    print(w.tempMax);
-  }
 
   _NewsfeedState({required this.loc});
   final HomeScreen news = new HomeScreen();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    queryWeather();
+    print(loc);
     return DefaultTabController(
       length: 2,
       child: Scaffold(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:san/UI/viewFriendsui.dart';
 import 'package:san/addfriends.dart';
-import 'package:san/viewFriends.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Menu extends StatefulWidget {
