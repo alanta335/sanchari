@@ -27,6 +27,10 @@ class _MapScreenState extends State<MapScreen> {
   bool show = false;
   int countOfP = 0;
   List<LatLng> points = [];
+  List<SearchResult> searchResultList = [];
+  List<SearchResult> searchResultList2 = [];
+  List<SearchResult> searchResultList3 = [];
+  List<SearchResult> searchResultList4 = [];
   l.Location location = new l.Location();
   _MapScreenState({@required this.la, @required this.lo});
   late GoogleMapController _controller;
@@ -50,6 +54,16 @@ class _MapScreenState extends State<MapScreen> {
             right: 5,
             child: Column(
               children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    _nearRest();
+                    _controller.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                          CameraPosition(target: LatLng(la, lo), zoom: 16)),
+                    );
+                  },
+                  child: Text('nearby'),
+                ),
                 GestureDetector(
                   onTap: () async {
                     _firLoc();
@@ -353,5 +367,87 @@ class _MapScreenState extends State<MapScreen> {
     _controller.animateCamera(CameraUpdate.newLatLng(LatLng(
         result2!.result!.geometry!.location!.lat!,
         result2.result!.geometry!.location!.lng!)));
+  }
+
+  void _nearRest() async {
+    var result1 = await googlePlace.search
+        .getNearBySearch(Location(lat: la, lng: lo), 5000, type: "hospital");
+    var result2 = await googlePlace.search
+        .getNearBySearch(Location(lat: la, lng: lo), 10000, type: "police");
+    var result3 = await googlePlace.search
+        .getNearBySearch(Location(lat: la, lng: lo), 1000, type: "restaurant");
+    var result4 = await googlePlace.search
+        .getNearBySearch(Location(lat: la, lng: lo), 1000, type: "repair");
+    setState(() {
+      searchResultList = result1!.results!;
+      searchResultList2 = result2!.results!;
+      searchResultList3 = result3!.results!;
+      searchResultList4 = result4!.results!;
+    });
+    for (int i = 0; i < searchResultList.length; i++) {
+      markers.add(
+        Marker(
+          infoWindow: InfoWindow(
+            title: searchResultList[i].name,
+          ),
+          markerId: MarkerId(searchResultList[i].name!),
+          position: LatLng(searchResultList[i].geometry!.location!.lat!,
+              searchResultList[i].geometry!.location!.lng!),
+          onTap: () {
+            print("___________");
+          },
+        ),
+      );
+    }
+    for (int i = 0; i < searchResultList2.length; i++) {
+      markers.add(
+        Marker(
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+          infoWindow: InfoWindow(
+            title: searchResultList2[i].name,
+          ),
+          markerId: MarkerId(searchResultList2[i].name!),
+          position: LatLng(searchResultList2[i].geometry!.location!.lat!,
+              searchResultList2[i].geometry!.location!.lng!),
+          onTap: () {
+            print("___________");
+          },
+        ),
+      );
+    }
+    for (int i = 0; i < searchResultList3.length; i++) {
+      markers.add(
+        Marker(
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          infoWindow: InfoWindow(
+            title: searchResultList3[i].name,
+          ),
+          markerId: MarkerId(searchResultList3[i].name!),
+          position: LatLng(searchResultList3[i].geometry!.location!.lat!,
+              searchResultList3[i].geometry!.location!.lng!),
+          onTap: () {
+            print("___________");
+          },
+        ),
+      );
+    }
+    for (int i = 0; i < searchResultList4.length; i++) {
+      markers.add(
+        Marker(
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+          infoWindow: InfoWindow(
+            title: searchResultList4[i].name,
+          ),
+          markerId: MarkerId(searchResultList4[i].name!),
+          position: LatLng(searchResultList4[i].geometry!.location!.lat!,
+              searchResultList4[i].geometry!.location!.lng!),
+          onTap: () {
+            print("___________");
+          },
+        ),
+      );
+    }
   }
 }
