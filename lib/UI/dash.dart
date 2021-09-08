@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
               left: 10,
               child: Builder(
                 builder: (context) => IconButton(
-                  icon: Image.asset('images/drawer.png'),
+                  icon: SvgPicture.asset('images/drawer.svg'),
                   iconSize: 40,
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
               top: 0,
               right: 10,
               child: IconButton(
-                icon: Image.asset('images/chat.png'),
+                icon: SvgPicture.asset('images/chat.svg'),
                 iconSize: 80,
                 onPressed: () {},
               ),

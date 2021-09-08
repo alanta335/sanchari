@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:san/news2.dart';
 import 'package:san/weatherUI.dart';
@@ -27,7 +28,7 @@ class _NewsfeedState extends State<Newsfeed> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(height * 0.15),
+            preferredSize: Size.fromHeight(height * 0.08),
             child: AppBar(
               elevation: 0,
               toolbarHeight: 100,

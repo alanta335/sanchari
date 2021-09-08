@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,17 +10,17 @@ import 'package:google_place/google_place.dart';
 import 'package:location/location.dart' as l;
 import 'package:google_maps_routes/google_maps_routes.dart';
 
-class MapScreen extends StatefulWidget {
+class MapScreen2 extends StatefulWidget {
   var lat, long;
 
-  MapScreen({@required this.lat, @required this.long});
+  MapScreen2({@required this.lat, @required this.long});
 
   @override
-  _MapScreenState createState() => _MapScreenState(la: lat, lo: long);
+  _MapScreen2State createState() => _MapScreen2State(la: lat, lo: long);
 }
 
-class _MapScreenState extends State<MapScreen> {
-  _MapScreenState({@required this.la, @required this.lo});
+class _MapScreen2State extends State<MapScreen2> {
+  _MapScreen2State({@required this.la, @required this.lo});
   var la, lo;
   var result;
   var placeId;
@@ -72,92 +73,7 @@ class _MapScreenState extends State<MapScreen> {
                           color: Color.fromRGBO(37, 36, 39, 1),
                           borderRadius: BorderRadius.circular(10)),
                       child: Center(child: Text('nearby'))),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    _firLoc();
-                    _controller.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                          CameraPosition(target: LatLng(la, lo), zoom: 9)),
-                    );
-                  },
-                  child: Container(
-                      width: 110,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: Text(
-                          'find friends',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      markers.clear();
-                      route.routes.clear();
-                      markers.add(
-                        Marker(
-                          position: LatLng(la, lo),
-                          markerId: MarkerId('current_location'),
-                          infoWindow: InfoWindow(
-                              title: 'my location', snippet: '$la / $lo'),
-                        ),
-                      );
-                      points.clear();
-                      points.add(LatLng(la, lo));
-                    });
-                  },
-                  child: Container(
-                      width: 110,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: Text(
-                          'Clean Routes',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    FirebaseFirestore.instance
-                        .collection('USERS')
-                        .doc('${FirebaseAuth.instance.currentUser!.uid}')
-                        .collection('TRIP')
-                        .doc()
-                        .set({
-                      'name': result3!.result!.name!,
-                      'placeId': placeId,
-                      'lat': result3!.result!.geometry!.location!.lat!,
-                      'lng': result3!.result!.geometry!.location!.lng!,
-                      'added_time': DateTime.now().toString().substring(0, 16),
-                    });
-                  },
-                  child: Container(
-                      width: 110,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: Text(
-                          'Add trip',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
-                ),
+                )
               ],
             ),
           ),
@@ -170,7 +86,7 @@ class _MapScreenState extends State<MapScreen> {
     print('$cordinates----+++++++');
     points.add(cordinates);
     print(points);
-    await route.drawRoute(points, 'trip', Colors.black54,
+    await route.drawRoute(points, 'trip', Color.fromRGBO(130, 78, 210, 1.0),
         'AIzaSyA1bs9xDzhAEb5IpByX_-e0SzPW1QSXKQU',
         travelMode: TravelModes.walking);
     await Future.delayed(Duration(seconds: 2));
@@ -397,15 +313,10 @@ class _MapScreenState extends State<MapScreen> {
         .getNearBySearch(Location(lat: la, lng: lo), 5000, type: "hospital");
     var result2 = await googlePlace.search
         .getNearBySearch(Location(lat: la, lng: lo), 10000, type: "police");
-    var result3 = await googlePlace.search
-        .getNearBySearch(Location(lat: la, lng: lo), 1000, type: "restaurant");
-    var result4 = await googlePlace.search
-        .getNearBySearch(Location(lat: la, lng: lo), 1000, type: "repair");
+
     setState(() {
       searchResultList = result1!.results!;
       searchResultList2 = result2!.results!;
-      searchResultList3 = result3!.results!;
-      searchResultList4 = result4!.results!;
     });
     for (int i = 0; i < searchResultList.length; i++) {
       markers.add(
@@ -417,7 +328,28 @@ class _MapScreenState extends State<MapScreen> {
           position: LatLng(searchResultList[i].geometry!.location!.lat!,
               searchResultList[i].geometry!.location!.lng!),
           onTap: () {
-            print("___________");
+            AlertDialog(
+              title: Container(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        cordinates2 = LatLng(
+                            searchResultList[i].geometry!.location!.lat!,
+                            searchResultList[i].geometry!.location!.lng!);
+                        addMarker(cordinates2);
+                        print("___________");
+                      },
+                      child: Text('fdsfsdfdf'),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text('fdsfsdfdf'),
+                    )
+                  ],
+                ),
+              ),
+            );
           },
         ),
       );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:san/homepage.dart';
 import 'package:san/map.dart';
+import 'package:san/maphelp.dart';
 import 'package:san/news.dart';
 import 'package:san/news2.dart';
 import 'dash.dart';
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Home(),
       Newsfeed(locality: loc),
       MapScreen(lat: la, long: lo),
-      LoggedInWidget(),
+      MapScreen2(lat: la, long: lo),
       Menu()
     ];
     print(loc);
