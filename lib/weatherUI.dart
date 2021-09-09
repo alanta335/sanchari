@@ -66,6 +66,7 @@ class _WeatheruiState extends State<Weatherui> {
   ];
   int a = 3;
   List<Weather> _data = [];
+  bool fore = false;
   WeatherFactory wf = new WeatherFactory("f6f05e62a44e4f9ba8eb4b805ef44e74");
   bool isget = false;
   void queryWeather() async {
@@ -86,9 +87,30 @@ class _WeatheruiState extends State<Weatherui> {
     print(_data.elementAt(1).areaName);
   }
 
+  Widget _buildWeatherListView(List<Weather> _data) {
+    return Container(
+      height: 200,
+      width: 200,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              isThreeLine: true,
+              title: Container(
+                  color: Colors.amber,
+                  child: Text(_data.elementAt(index).areaName!)),
+              subtitle: Text(''),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   Widget contentFinishedDownload() {
     return ListView.builder(
-      scrollDirection: Axis.horizontal,
       itemCount: _data.length,
       itemBuilder: (context, index) {
         return Container(child: Text(_data[index].areaName!));
@@ -119,7 +141,6 @@ class _WeatheruiState extends State<Weatherui> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
@@ -168,10 +189,13 @@ class _WeatheruiState extends State<Weatherui> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Text(
-                      'Check out the whole forecast',
-                      style: TextStyle(
-                        color: Colors.black,
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        'Check out the whole forecast',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     SizedBox(width: 10),

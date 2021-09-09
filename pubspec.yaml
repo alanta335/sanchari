@@ -48,7 +48,8 @@ dependencies:
   url_launcher:
   weather: ^2.0.1
   weather_icons: ^3.0.0
-
+  clipboard: ^0.1.3
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

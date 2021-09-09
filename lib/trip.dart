@@ -44,7 +44,7 @@ class _TripState extends State<Trip> {
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 return ElevatedButton(
                   style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+                    elevation: MaterialStateProperty.all(0),
                     backgroundColor:
                         MaterialStateProperty.all(Colors.transparent),
                   ),
@@ -69,28 +69,42 @@ class _TripState extends State<Trip> {
                       ],
                     ).show();
                   },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * .85,
-                    color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 25),
-                        child: ListTile(
-                          title: Center(
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.location_on_sharp,
-                                  color: Colors.black,
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * .85,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, .2),
+                            blurRadius: 10.0,
+                          )
+                        ],
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Container(
+                            child: ListTile(
+                              title: Center(
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_sharp,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('${document.get('name')}'),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('${document.get('name')}'),
-                              ],
+                              ),
                             ),
                           ),
-                          subtitle: Text('\n'),
                         ),
                       ),
                     ),

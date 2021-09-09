@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   l.Location location = new l.Location();
-  final HomeScr = HomeScreen();
   var _currentAddress;
   late bool _serviceEnabled;
   late l.PermissionStatus _permissionGranted;
@@ -110,10 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(child: SvgPicture.asset(image)),
             ),
             Container(
-              height: _selected_item == index ? 10 : 0,
-              width: MediaQuery.of(context).size.width * .1,
+              height: _selected_item == index ? 9 : 0,
+              width: MediaQuery.of(context).size.width * .13,
               decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Color.fromRGBO(79, 79, 79, 1),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10))),

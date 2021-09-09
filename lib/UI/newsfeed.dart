@@ -19,7 +19,6 @@ class _NewsfeedState extends State<Newsfeed> {
   WeatherFactory wf = new WeatherFactory("f6f05e62a44e4f9ba8eb4b805ef44e74");
 
   _NewsfeedState({required this.loc});
-  final HomeScreen news = new HomeScreen();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -28,8 +27,20 @@ class _NewsfeedState extends State<Newsfeed> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(height * 0.08),
+            preferredSize: Size.fromHeight(height * 0.15),
             child: AppBar(
+              title: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  'News and Weather',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontFamily: 'SFProDisplay',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
               elevation: 0,
               toolbarHeight: 100,
               backgroundColor: Colors.white,

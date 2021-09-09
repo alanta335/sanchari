@@ -52,7 +52,7 @@ class _MYHomePageState extends State<MYHomePage> {
                   child: Text("error"),
                 );
               } else if (snapshot.hasData) {
-                return HomeScreen();
+                return Ss();
               } else {
                 return Signup();
               }

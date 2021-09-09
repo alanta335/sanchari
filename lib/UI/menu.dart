@@ -14,60 +14,71 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(height * 0.33),
+            preferredSize: Size.fromHeight(height * 0.12),
             child: AppBar(
-              toolbarHeight: 300,
-              title: Column(
-                children: [
-                  ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      child: Image(image: NetworkImage(user.photoURL!))),
-                  SizedBox(
-                    height: 10,
+              elevation: 0,
+              title: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  ' Account',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontFamily: 'SFProDisplay',
+                    fontWeight: FontWeight.w700,
                   ),
-                  Text(
-                    user.displayName!,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontFamily: 'SFProDisplay'),
-                  )
-                ],
+                ),
               ),
-              centerTitle: true,
-              backgroundColor: Color.fromRGBO(37, 36, 39, 1),
-              bottom: TabBar(indicatorColor: Color.fromRGBO(0, 0, 0, 1), tabs: [
-                Tab(
-                    child: Text(
-                  'Friends',
-                  style: TextStyle(
-                      color: Colors.white, fontFamily: 'SFProDisplay'),
-                )),
-                Tab(
-                    child: Text(
-                  'SOS Contacts',
-                  style: TextStyle(
-                      color: Colors.white, fontFamily: 'SFProDisplay'),
-                )),
-              ]),
+              backgroundColor: Colors.white,
+              bottom: TabBar(
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicatorColor: Colors.black,
+                  unselectedLabelColor: Colors.grey,
+                  labelColor: Colors.black,
+                  tabs: [
+                    Expanded(
+                      flex: 4,
+                      child: Tab(
+                          child: Text(
+                        'Profile',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontFamily: 'SFProDisplay'),
+                      )),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Tab(
+                          child: Text(
+                        'Friends',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontFamily: 'SFProDisplay'),
+                      )),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Tab(
+                          child: Text(
+                        'SOS ',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontFamily: 'SFProDisplay'),
+                      )),
+                    ),
+                  ]),
             )),
-        body: TabBarView(children: [ViewFriendsUI(), Text('blah bah')]),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Color.fromRGBO(37, 36, 39, 1),
-          label: Text(
-            'Add Friends',
-            style: TextStyle(
-                color: Colors.white, fontSize: 12, fontFamily: 'SFProDisplay'),
-          ),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddFriends()));
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: TabBarView(
+            children: [Text('blah bah'), ViewFriendsUI(), Text('blah bah')]),
       ),
     );
   }

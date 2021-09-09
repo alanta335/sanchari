@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:location/location.dart' as l;
@@ -34,6 +34,7 @@ class _MapScreenState extends State<MapScreen> {
   List<SearchResult> searchResultList3 = [];
   List<SearchResult> searchResultList4 = [];
   l.Location location = new l.Location();
+  bool _load = true;
 
   late GoogleMapController _controller;
   late MapsRoutes route = new MapsRoutes();
@@ -45,125 +46,135 @@ class _MapScreenState extends State<MapScreen> {
   var googlePlace = GooglePlace('AIzaSyA1bs9xDzhAEb5IpByX_-e0SzPW1QSXKQU');
   late BitmapDescriptor map_marker;
   List<AutocompletePrediction> predictions = [];
+
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      if (la == null) {
+        _load = false;
+      }
+    });
     return SafeArea(
-      child: Scaffold(
-        body: Stack(fit: StackFit.expand, children: [
-          buildMaps(),
-          floatingSearch(),
-          Positioned(
-            bottom: 10,
-            right: 5,
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    _nearRest();
-                    _controller.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                          CameraPosition(target: LatLng(la, lo), zoom: 16)),
-                    );
-                  },
-                  child: Container(
-                      width: 110,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(child: Text('nearby'))),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    _firLoc();
-                    _controller.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                          CameraPosition(target: LatLng(la, lo), zoom: 9)),
-                    );
-                  },
-                  child: Container(
-                      width: 110,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: Text(
-                          'find friends',
-                          style: TextStyle(color: Colors.white),
+        child: _load
+            ? Scaffold(
+                body: Stack(fit: StackFit.expand, children: [
+                  buildMaps(),
+                  floatingSearch(),
+                  Positioned(
+                    bottom: 10,
+                    right: 5,
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            _nearRest();
+                            _controller.animateCamera(
+                              CameraUpdate.newCameraPosition(CameraPosition(
+                                  target: LatLng(la, lo), zoom: 16)),
+                            );
+                          },
+                          child: Container(
+                              width: 110,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(37, 36, 39, 1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(child: Text('nearby'))),
                         ),
-                      )),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      markers.clear();
-                      route.routes.clear();
-                      markers.add(
-                        Marker(
-                          position: LatLng(la, lo),
-                          markerId: MarkerId('current_location'),
-                          infoWindow: InfoWindow(
-                              title: 'my location', snippet: '$la / $lo'),
+                        GestureDetector(
+                          onTap: () async {
+                            _firLoc();
+                            _controller.animateCamera(
+                              CameraUpdate.newCameraPosition(CameraPosition(
+                                  target: LatLng(la, lo), zoom: 9)),
+                            );
+                          },
+                          child: Container(
+                              width: 110,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(37, 36, 39, 1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: Text(
+                                  'find friends',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )),
                         ),
-                      );
-                      points.clear();
-                      points.add(LatLng(la, lo));
-                    });
-                  },
-                  child: Container(
-                      width: 110,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: Text(
-                          'Clean Routes',
-                          style: TextStyle(color: Colors.white),
+                        SizedBox(
+                          height: 10,
                         ),
-                      )),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    FirebaseFirestore.instance
-                        .collection('USERS')
-                        .doc('${FirebaseAuth.instance.currentUser!.uid}')
-                        .collection('TRIP')
-                        .doc()
-                        .set({
-                      'name': result3!.result!.name!,
-                      'placeId': placeId,
-                      'lat': result3!.result!.geometry!.location!.lat!,
-                      'lng': result3!.result!.geometry!.location!.lng!,
-                      'added_time': DateTime.now().toString().substring(0, 16),
-                    });
-                  },
-                  child: Container(
-                      width: 110,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: Text(
-                          'Add trip',
-                          style: TextStyle(color: Colors.white),
+                        GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              markers.clear();
+                              route.routes.clear();
+                              markers.add(
+                                Marker(
+                                  position: LatLng(la, lo),
+                                  markerId: MarkerId('current_location'),
+                                  infoWindow: InfoWindow(
+                                      title: 'my location',
+                                      snippet: '$la / $lo'),
+                                ),
+                              );
+                              points.clear();
+                              points.add(LatLng(la, lo));
+                            });
+                          },
+                          child: Container(
+                              width: 110,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(37, 36, 39, 1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: Text(
+                                  'Clean Routes',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )),
                         ),
-                      )),
-                ),
-              ],
-            ),
-          ),
-        ]),
-      ),
-    );
+                        SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            FirebaseFirestore.instance
+                                .collection('USERS')
+                                .doc(
+                                    '${FirebaseAuth.instance.currentUser!.uid}')
+                                .collection('TRIP')
+                                .doc()
+                                .set({
+                              'name': result3!.result!.name!,
+                              'placeId': placeId,
+                              'lat': result3!.result!.geometry!.location!.lat!,
+                              'lng': result3!.result!.geometry!.location!.lng!,
+                              'added_time':
+                                  DateTime.now().toString().substring(0, 16),
+                            });
+                          },
+                          child: Container(
+                              width: 110,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(37, 36, 39, 1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: Text(
+                                  'Add trip',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+              )
+            : CircularProgressIndicator());
   }
 
   void addMarker(cordinates) async {
