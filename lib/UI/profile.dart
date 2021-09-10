@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../main.dart';
 
 import 'package:provider/provider.dart';
 import 'package:san/UI/login.dart';
@@ -10,9 +15,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String Username = '';
-
-  String Phonenumber = '';
+  String address = '';
+  TextEditingController phnoController = TextEditingController();
+  TextEditingController tripController = TextEditingController();
+  String phoneNumber = '';
   String email = '';
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class _ProfileState extends State<Profile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Username',
+              'Trip name',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -49,12 +55,13 @@ class _ProfileState extends State<Profile> {
                 padding: const EdgeInsets.only(
                     top: 16, left: 8, right: 8, bottom: 8),
                 child: TextFormField(
+                  controller: tripController,
                   style: TextStyle(
                     color: Color.fromRGBO(148, 153, 162, 1),
                   ),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Username',
+                    hintText: 'Trip name',
                     fillColor: Colors.white,
                     filled: true,
                     hintStyle: TextStyle(
@@ -69,7 +76,7 @@ class _ProfileState extends State<Profile> {
                   },
                   onChanged: (val) {
                     setState(() {
-                      Username = val;
+                      address = val;
                     });
                   },
                 ),
@@ -104,12 +111,13 @@ class _ProfileState extends State<Profile> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  controller: phnoController,
                   style: TextStyle(
                     color: Color.fromRGBO(148, 153, 162, 1),
                   ),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Username',
+                    hintText: 'phone no',
                     fillColor: Colors.white,
                     filled: true,
                     hintStyle: TextStyle(
@@ -124,7 +132,7 @@ class _ProfileState extends State<Profile> {
                   },
                   onChanged: (val) {
                     setState(() {
-                      Phonenumber = val;
+                      phoneNumber = val;
                     });
                   },
                 ),
@@ -135,6 +143,20 @@ class _ProfileState extends State<Profile> {
             ),
             Center(
               child: GestureDetector(
+                onTap: () {
+                  FirebaseFirestore.instance
+                      .collection('USERS')
+                      .doc('${FirebaseAuth.instance.currentUser!.uid}')
+                      .update({
+                    'phone_no': phnoController.text,
+                  });
+                  FirebaseFirestore.instance
+                      .collection('USERS')
+                      .doc('${FirebaseAuth.instance.currentUser!.uid}')
+                      .update({
+                    'Trip_name': tripController.text,
+                  });
+                },
                 child: Container(
                   height: 45,
                   width: MediaQuery.of(context).size.width * .4,
@@ -173,12 +195,20 @@ class _ProfileState extends State<Profile> {
                   height: 20,
                   width: MediaQuery.of(context).size.width * .4,
                   child: Center(
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontFamily: 'SFProDisplay'),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final provider = Provider.of<GoogleSignInProvider>(
+                            context,
+                            listen: false);
+                        provider.loggedout();
+                      },
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontFamily: 'SFProDisplay'),
+                      ),
                     ),
                   ),
                 ),

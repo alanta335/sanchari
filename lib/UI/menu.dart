@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:san/UI/profile.dart';
+import 'package:san/UI/sosfriendui.dart';
 import 'package:san/UI/viewFriendsui.dart';
 import 'package:san/addfriends.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -80,8 +81,8 @@ class _MenuState extends State<Menu> {
                     ),
                   ]),
             )),
-        body: TabBarView(
-            children: [Profile(), ViewFriendsUI(), Text('blah bah')]),
+        body:
+            TabBarView(children: [Profile(), ViewFriendsUI(), SosFriendsUI()]),
       ),
     );
   }
