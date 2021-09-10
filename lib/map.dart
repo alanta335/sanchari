@@ -33,6 +33,7 @@ class _MapScreenState extends State<MapScreen> {
   List<SearchResult> searchResultList2 = [];
   List<SearchResult> searchResultList3 = [];
   List<SearchResult> searchResultList4 = [];
+  List<SearchResult> searchResultList5 = [];
   l.Location location = new l.Location();
   bool _load = true;
 
@@ -44,7 +45,12 @@ class _MapScreenState extends State<MapScreen> {
 
   TextEditingController searchQ = TextEditingController();
   var googlePlace = GooglePlace('AIzaSyA1bs9xDzhAEb5IpByX_-e0SzPW1QSXKQU');
-  late BitmapDescriptor map_marker,hospital_marker,police_marker,repair_marker,restro_marker;
+  late BitmapDescriptor map_marker,
+      hospital_marker,
+      police_marker,
+      repair_marker,
+      restro_marker,
+      hotel_marker;
   List<AutocompletePrediction> predictions = [];
 
   @override
@@ -65,43 +71,6 @@ class _MapScreenState extends State<MapScreen> {
                     right: 5,
                     child: Column(
                       children: [
-                        GestureDetector(
-                          onTap: () async {
-                            _nearRest();
-                            _controller.animateCamera(
-                              CameraUpdate.newCameraPosition(CameraPosition(
-                                  target: LatLng(la, lo), zoom: 16)),
-                            );
-                          },
-                          child: Container(
-                              width: 110,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(37, 36, 39, 1),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(child: Text('nearby'))),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            _firLoc();
-                            _controller.animateCamera(
-                              CameraUpdate.newCameraPosition(CameraPosition(
-                                  target: LatLng(la, lo), zoom: 9)),
-                            );
-                          },
-                          child: Container(
-                              width: 110,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(37, 36, 39, 1),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: Text(
-                                  'find friends',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )),
-                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -363,18 +332,20 @@ class _MapScreenState extends State<MapScreen> {
   void setCustomMrker() async {
     map_marker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'images/markerfrnd.png');
-    
-     hospital_marker = await BitmapDescriptor.fromAssetImage(
+
+    hospital_marker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'images/hospital.png');
 
     police_marker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'images/police.png');
 
     repair_marker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), 'images/repair.png');
+        ImageConfiguration(), 'images/petrol.png');
 
     restro_marker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'images/restro.png');
+    hotel_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/hotel.png');
   }
 
   void addMarkerOfFriends(
@@ -423,12 +394,15 @@ class _MapScreenState extends State<MapScreen> {
     var result3 = await googlePlace.search
         .getNearBySearch(Location(lat: la, lng: lo), 1000, type: "restaurant");
     var result4 = await googlePlace.search
-        .getNearBySearch(Location(lat: la, lng: lo), 1000, type: "repair");
+        .getNearBySearch(Location(lat: la, lng: lo), 1000, type: "petrol");
+    var result5 = await googlePlace.search
+        .getNearBySearch(Location(lat: la, lng: lo), 1000, type: "hotel");
     setState(() {
       searchResultList = result1!.results!;
       searchResultList2 = result2!.results!;
       searchResultList3 = result3!.results!;
       searchResultList4 = result4!.results!;
+      searchResultList5 = result5!.results!;
     });
     for (int i = 0; i < searchResultList.length; i++) {
       markers.add(
@@ -481,7 +455,23 @@ class _MapScreenState extends State<MapScreen> {
     for (int i = 0; i < searchResultList4.length; i++) {
       markers.add(
         Marker(
-          icon:repair_marker,
+          icon: repair_marker,
+          infoWindow: InfoWindow(
+            title: searchResultList4[i].name,
+          ),
+          markerId: MarkerId(searchResultList4[i].name!),
+          position: LatLng(searchResultList4[i].geometry!.location!.lat!,
+              searchResultList4[i].geometry!.location!.lng!),
+          onTap: () {
+            print("___________");
+          },
+        ),
+      );
+    }
+    for (int i = 0; i < searchResultList5.length; i++) {
+      markers.add(
+        Marker(
+          icon: hospital_marker,
           infoWindow: InfoWindow(
             title: searchResultList4[i].name,
           ),

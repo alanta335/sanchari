@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:geocoding/geocoding.dart' as gc;
 import 'package:rflutter_alert/rflutter_alert.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:location/location.dart' as l;
 import 'package:google_maps_routes/google_maps_routes.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'homepage.dart';
 
 class MapScreen2 extends StatefulWidget {
   var lat, long;
@@ -23,8 +25,18 @@ class _MapScreen2State extends State<MapScreen2> {
   _MapScreen2State({@required this.la, @required this.lo});
   var la, lo;
   var result;
+  var _currentAddress;
+  late bool _serviceEnabled;
+  late l.PermissionStatus _permissionGranted;
+  late l.LocationData _locationData;
+
+  bool _isGetLocation = false;
+  bool _isCompleted = false;
+
   var placeId;
+  late gc.Placemark place_sos;
   int m = 0;
+  var loc;
   var cordinates2;
   var result3;
   bool show = false;
@@ -44,7 +56,13 @@ class _MapScreen2State extends State<MapScreen2> {
 
   TextEditingController searchQ = TextEditingController();
   var googlePlace = GooglePlace('AIzaSyA1bs9xDzhAEb5IpByX_-e0SzPW1QSXKQU');
-  late BitmapDescriptor map_marker;
+  late BitmapDescriptor map_marker,
+      hospital_marker,
+      police_marker,
+      repair_marker,
+      restro_marker,
+      hotel_marker,
+      map_marker2;
   List<AutocompletePrediction> predictions = [];
   @override
   Widget build(BuildContext context) {
@@ -52,12 +70,35 @@ class _MapScreen2State extends State<MapScreen2> {
       child: Scaffold(
         body: Stack(fit: StackFit.expand, children: [
           buildMaps(),
-          floatingSearch(),
           Positioned(
             bottom: 10,
-            right: 5,
+            right: 10,
             child: Column(
               children: [
+                GestureDetector(
+                  onTap: () async {
+                    _firLoc();
+                    _controller.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                          CameraPosition(target: LatLng(la, lo), zoom: 9)),
+                    );
+                  },
+                  child: Container(
+                      width: 110,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(37, 36, 39, 1),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: Text(
+                          'find friends',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
                   onTap: () async {
                     _nearRest();
@@ -68,20 +109,69 @@ class _MapScreen2State extends State<MapScreen2> {
                   },
                   child: Container(
                       width: 110,
-                      height: 40,
+                      height: 50,
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(37, 36, 39, 1),
                           borderRadius: BorderRadius.circular(10)),
                       child: Center(
                           child: Text(
-                        'Nearby',
+                        'Discover Help Nearby',
+                        textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white),
                       ))),
-                )
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      markers.clear();
+                      route.routes.clear();
+                      markers.add(
+                        Marker(
+                          icon: map_marker,
+                          position: LatLng(la, lo),
+                          markerId: MarkerId('current_location'),
+                          infoWindow: InfoWindow(
+                              title: 'my location', snippet: '$la / $lo'),
+                        ),
+                      );
+                      points.clear();
+                      points.add(LatLng(la, lo));
+                    });
+                  },
+                  child: Container(
+                      width: 110,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(37, 36, 39, 1),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: Text(
+                          'Clean Routes',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )),
+                ),
               ],
             ),
           ),
         ]),
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Color.fromRGBO(37, 36, 39, 1),
+          label: Text(
+            'SOS ',
+            style: TextStyle(
+                color: Colors.white, fontSize: 12, fontFamily: 'SFProDisplay'),
+          ),
+          onPressed: () {
+            _sosLoc();
+            const tm = Duration(seconds: 30);
+            Timer.periodic(tm, (Timer t) => _sosLoc());
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
@@ -98,6 +188,7 @@ class _MapScreen2State extends State<MapScreen2> {
     setState(() {
       markers.add(
         Marker(
+          icon: map_marker2,
           position: cordinates,
           markerId: MarkerId('$cordinates'),
           infoWindow:
@@ -272,6 +363,21 @@ class _MapScreen2State extends State<MapScreen2> {
   void setCustomMrker() async {
     map_marker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'images/markerfrnd.png');
+    hospital_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/hospital.png');
+
+    police_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/police.png');
+
+    repair_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/petrol.png');
+
+    restro_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/restro.png');
+    hotel_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/hotel.png');
+    hotel_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/null.png');
   }
 
   void addMarkerOfFriends(
@@ -325,6 +431,7 @@ class _MapScreen2State extends State<MapScreen2> {
     for (int i = 0; i < searchResultList.length; i++) {
       markers.add(
         Marker(
+          icon: hospital_marker,
           infoWindow: InfoWindow(
             title: searchResultList[i].name,
           ),
@@ -332,28 +439,55 @@ class _MapScreen2State extends State<MapScreen2> {
           position: LatLng(searchResultList[i].geometry!.location!.lat!,
               searchResultList[i].geometry!.location!.lng!),
           onTap: () {
-            AlertDialog(
-              title: Container(
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        cordinates2 = LatLng(
-                            searchResultList[i].geometry!.location!.lat!,
-                            searchResultList[i].geometry!.location!.lng!);
-                        addMarker(cordinates2);
-                        print("___________");
-                      },
-                      child: Text('fdsfsdfdf'),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Text('fdsfsdfdf'),
-                    )
+            Alert(
+              content: Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, .05),
+                        blurRadius: 10.0,
+                        spreadRadius: 5)
                   ],
                 ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 16, left: 8, right: 8, bottom: 8),
+                  child: Text('call'),
+                ),
               ),
-            );
+              context: context,
+              title: "do you want to call",
+              buttons: [
+                DialogButton(
+                  color: Color.fromRGBO(37, 36, 39, 1),
+                  onPressed: () async {
+                    var result6 = await googlePlace.details
+                        .get("${searchResultList[i].placeId}");
+                    await launch(
+                        'tel:${result6!.result!.formattedPhoneNumber}');
+                    print("${result6.result!.formattedPhoneNumber}");
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "call...",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                DialogButton(
+                  color: Color.fromRGBO(37, 36, 39, 1),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "no change",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ).show();
           },
         ),
       );
@@ -361,8 +495,7 @@ class _MapScreen2State extends State<MapScreen2> {
     for (int i = 0; i < searchResultList2.length; i++) {
       markers.add(
         Marker(
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+          icon: police_marker,
           infoWindow: InfoWindow(
             title: searchResultList2[i].name,
           ),
@@ -370,43 +503,139 @@ class _MapScreen2State extends State<MapScreen2> {
           position: LatLng(searchResultList2[i].geometry!.location!.lat!,
               searchResultList2[i].geometry!.location!.lng!),
           onTap: () {
-            print("___________");
+            Alert(
+              content: Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, .05),
+                        blurRadius: 10.0,
+                        spreadRadius: 5)
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 16, left: 8, right: 8, bottom: 8),
+                  child: Text('call'),
+                ),
+              ),
+              context: context,
+              title: "do you want to call",
+              buttons: [
+                DialogButton(
+                  color: Color.fromRGBO(37, 36, 39, 1),
+                  onPressed: () async {
+                    var result7 = await googlePlace.details
+                        .get("${searchResultList2[i].placeId}");
+                    await launch(
+                        'tel:${result7!.result!.formattedPhoneNumber}');
+                    print("${result7.result!.formattedPhoneNumber}");
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "call...",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                DialogButton(
+                  color: Color.fromRGBO(37, 36, 39, 1),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "no change",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ).show();
           },
         ),
       );
     }
-    for (int i = 0; i < searchResultList3.length; i++) {
-      markers.add(
-        Marker(
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          infoWindow: InfoWindow(
-            title: searchResultList3[i].name,
-          ),
-          markerId: MarkerId(searchResultList3[i].name!),
-          position: LatLng(searchResultList3[i].geometry!.location!.lat!,
-              searchResultList3[i].geometry!.location!.lng!),
-          onTap: () {
-            print("___________");
-          },
-        ),
-      );
+  }
+
+  _getAddressFromLatLng() async {
+    try {
+      List<gc.Placemark> placemarks = await gc.placemarkFromCoordinates(
+          _locationData.latitude!, _locationData.longitude!);
+
+      gc.Placemark place = placemarks[0];
+      place_sos = place;
+      loc = place.locality;
+      setState(() {
+        _currentAddress =
+            "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+      FirebaseFirestore.instance
+          .collection('USERS')
+          .doc('${FirebaseAuth.instance.currentUser!.uid}')
+          .update({
+        'location': "${place.locality},${place.postalCode},${place.country}",
+        'lat': '${_locationData.latitude}',
+        'long': '${_locationData.longitude}',
+        'timestamp_of_loc': DateTime.now().toString(),
+        'completedReg': _isCompleted.toString(),
+      });
+    } catch (e) {
+      print(e);
     }
-    for (int i = 0; i < searchResultList4.length; i++) {
-      markers.add(
-        Marker(
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-          infoWindow: InfoWindow(
-            title: searchResultList4[i].name,
-          ),
-          markerId: MarkerId(searchResultList4[i].name!),
-          position: LatLng(searchResultList4[i].geometry!.location!.lat!,
-              searchResultList4[i].geometry!.location!.lng!),
-          onTap: () {
-            print("___________");
-          },
-        ),
-      );
+  }
+
+  _sosLoc() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
     }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == l.PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != l.PermissionStatus.granted) {
+        return;
+      }
+    }
+    _locationData = await location.getLocation();
+    setState(() {
+      _isGetLocation = true;
+      _getAddressFromLatLng();
+    });
+
+    Stream<QuerySnapshot> snap = FirebaseFirestore.instance
+        .collection("USERS")
+        .doc('${FirebaseAuth.instance.currentUser!.uid}')
+        .collection("EME_FR")
+        .snapshots();
+    snap.forEach(
+      (field) {
+        field.docs.asMap().forEach(
+          (index, data) {
+            print(data.id);
+            FirebaseFirestore.instance
+                .collection('USERS')
+                .doc('${data.id}')
+                .collection('SOS')
+                .doc('${FirebaseAuth.instance.currentUser!.uid}')
+                .set(
+              {
+                'name': FirebaseAuth.instance.currentUser!.displayName,
+                'id': FirebaseAuth.instance.currentUser!.uid,
+                'timestamp_of_req': DateTime.now().toString().substring(0, 16),
+                'loc_of_req':
+                    "${_locationData.latitude},${_locationData.longitude}",
+                'approx_loc':
+                    "${place_sos.locality},${place_sos.postalCode},${place_sos.country}"
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 var loc;
 var w;
@@ -150,7 +151,8 @@ class _WeatheruiState extends State<Weatherui> {
     } else {
       bool isget = true;
     }
-
+    String _url =
+        'https://www.google.com/search?q=weather&sxsrf=AOaemvJb0y1GyLAQ8h0ZFV2avzvMPJwLmg%3A1631291113339&ei=6YY7YdaPFLnCz7sP0OGQsAQ&oq=weather&gs_lcp=Cgdnd3Mtd2l6EAMyBwgjELADECcyBwgAEEcQsAMyBwgAEEcQsAMyBwgAEEcQsAMyBwgAEEcQsAMyBwgAEEcQsAMyBwgAEEcQsAMyBwgAEEcQsAMyBwgAEEcQsAMyBwgAELADEENKBAhBGABQoEZYoEZglkhoAXACeACAAQCIAQCSAQCYAQCgAQHIAQrAAQE&sclient=gws-wiz&ved=0ahUKEwiWqNf66PTyAhU54XMBHdAwBEYQ4dUDCA4&uact=5';
     setState(() {
       if (we == 'Rain') {
         print('dsjdiklsjdaksajdksadjksadjksajdl' + we);
@@ -171,294 +173,295 @@ class _WeatheruiState extends State<Weatherui> {
     });
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: fore
-            ? SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        width: width * .8,
-                        height: height * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Container(
-                              child: _widgetchoose.elementAt(a),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 30, bottom: 30),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    area,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'SFProDisplay',
-                                        fontSize: 20),
-                                  ),
-                                  Text(
-                                    temp,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'SFProDisplay',
-                                        fontSize: 25),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        )),
-                    SizedBox(height: 15),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(60, 20, 60, 20),
+      backgroundColor: Colors.white,
+      body: fore
+          ? SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(37, 36, 39, 1),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      width: width * .8,
+                      height: height * 0.2,
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                'Check out the whole forecast',
-                                style: TextStyle(
-                                  color: Colors.black,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Container(
+                            child: _widgetchoose.elementAt(a),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30, bottom: 30),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  area,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'SFProDisplay',
+                                      fontSize: 20),
                                 ),
+                                Text(
+                                  temp,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'SFProDisplay',
+                                      fontSize: 25),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
+                  SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(60, 20, 60, 20),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () async {
+                              await launch(_url);
+                            },
+                            child: Text(
+                              'Check out the whole forecast',
+                              style: TextStyle(
+                                color: Colors.black,
                               ),
                             ),
-                            SizedBox(width: 10),
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(37, 36, 39, 1),
-                              ),
-                              child: Icon(Icons.arrow_forward,
-                                  color: Colors.white),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromRGBO(37, 36, 39, 1),
                             ),
-                          ]),
-                    ),
-                    fore
-                        ? Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Container(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                          color: Color.fromRGBO(37, 36, 39, 1),
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 12.0,
-                                                left: 12.0,
-                                                right: 12.0),
-                                            child: Text(
-                                              'Day 1',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontFamily: 'SFProDisplay'),
-                                            ),
-                                          ),
-                                          Image(image: NetworkImage(_icon1)),
-                                          Text(
-                                            '${_data.elementAt(0).temperature.toString().replaceAll('Celsius', '°')}'
-                                            '',
+                            child:
+                                Icon(Icons.arrow_forward, color: Colors.white),
+                          ),
+                        ]),
+                  ),
+                  fore
+                      ? Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(37, 36, 39, 1),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0,
+                                              left: 12.0,
+                                              right: 12.0),
+                                          child: Text(
+                                            'Day 1',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w800,
                                                 fontFamily: 'SFProDisplay'),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Image(image: NetworkImage(_icon1)),
+                                        Text(
+                                          '${_data.elementAt(0).temperature.toString().replaceAll('Celsius', '°')}'
+                                          '',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'SFProDisplay'),
+                                        ),
+                                      ],
                                     ),
-                                  )),
-                                  Expanded(
-                                      child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                          color: Color.fromRGBO(37, 36, 39, 1),
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 12.0,
-                                                left: 12.0,
-                                                right: 12.0),
-                                            child: Text(
-                                              'Day 2',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontFamily: 'SFProDisplay'),
-                                            ),
-                                          ),
-                                          Image(image: NetworkImage(_icon2)),
-                                          Text(
-                                            '${_data.elementAt(1).temperature.toString().replaceAll('Celsius', '°')}'
-                                            '',
+                                  ),
+                                )),
+                                Expanded(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(37, 36, 39, 1),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0,
+                                              left: 12.0,
+                                              right: 12.0),
+                                          child: Text(
+                                            'Day 2',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w800,
                                                 fontFamily: 'SFProDisplay'),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Image(image: NetworkImage(_icon2)),
+                                        Text(
+                                          '${_data.elementAt(1).temperature.toString().replaceAll('Celsius', '°')}'
+                                          '',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'SFProDisplay'),
+                                        ),
+                                      ],
                                     ),
-                                  )),
-                                  Expanded(
-                                      child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                          color: Color.fromRGBO(37, 36, 39, 1),
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 12.0,
-                                                left: 12.0,
-                                                right: 12.0),
-                                            child: Text(
-                                              'Day 3',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontFamily: 'SFProDisplay'),
-                                            ),
-                                          ),
-                                          Image(image: NetworkImage(_icon3)),
-                                          Text(
-                                            '${_data.elementAt(2).temperature.toString().replaceAll('Celsius', '°')}'
-                                            '',
+                                  ),
+                                )),
+                                Expanded(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(37, 36, 39, 1),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0,
+                                              left: 12.0,
+                                              right: 12.0),
+                                          child: Text(
+                                            'Day 3',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w800,
                                                 fontFamily: 'SFProDisplay'),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Image(image: NetworkImage(_icon3)),
+                                        Text(
+                                          '${_data.elementAt(2).temperature.toString().replaceAll('Celsius', '°')}'
+                                          '',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'SFProDisplay'),
+                                        ),
+                                      ],
                                     ),
-                                  )),
-                                  Expanded(
-                                      child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                          color: Color.fromRGBO(37, 36, 39, 1),
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 12.0,
-                                                left: 12.0,
-                                                right: 12.0),
-                                            child: Text(
-                                              'Day 4',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontFamily: 'SFProDisplay'),
-                                            ),
-                                          ),
-                                          Image(image: NetworkImage(_icon4)),
-                                          Text(
-                                            '${_data.elementAt(3).temperature.toString().replaceAll('Celsius', '°')}'
-                                            '',
+                                  ),
+                                )),
+                                Expanded(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(37, 36, 39, 1),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0,
+                                              left: 12.0,
+                                              right: 12.0),
+                                          child: Text(
+                                            'Day 4',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w800,
                                                 fontFamily: 'SFProDisplay'),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Image(image: NetworkImage(_icon4)),
+                                        Text(
+                                          '${_data.elementAt(3).temperature.toString().replaceAll('Celsius', '°')}'
+                                          '',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'SFProDisplay'),
+                                        ),
+                                      ],
                                     ),
-                                  )),
-                                  Expanded(
-                                      child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                          color: Color.fromRGBO(37, 36, 39, 1),
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 12.0,
-                                                left: 12.0,
-                                                right: 12.0),
-                                            child: Text(
-                                              'Day 5',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontFamily: 'SFProDisplay'),
-                                            ),
-                                          ),
-                                          Image(image: NetworkImage(_icon5)),
-                                          Text(
-                                            '${_data.elementAt(4).temperature.toString().replaceAll('Celsius', '°')}'
-                                            '',
+                                  ),
+                                )),
+                                Expanded(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(37, 36, 39, 1),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0,
+                                              left: 12.0,
+                                              right: 12.0),
+                                          child: Text(
+                                            'Day 5',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w800,
                                                 fontFamily: 'SFProDisplay'),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Image(image: NetworkImage(_icon5)),
+                                        Text(
+                                          '${_data.elementAt(4).temperature.toString().replaceAll('Celsius', '°')}'
+                                          '',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'SFProDisplay'),
+                                        ),
+                                      ],
                                     ),
-                                  )),
-                                ],
-                              ),
+                                  ),
+                                )),
+                              ],
                             ),
-                          )
-                        : Container(),
-                  ],
-                ),
-              )
-            : Center(
-                child: CircularProgressIndicator(
-                color: Colors.black,
-              )));
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
+            )
+          : Center(
+              child: CircularProgressIndicator(
+              color: Colors.black,
+            )),
+    );
   }
 }

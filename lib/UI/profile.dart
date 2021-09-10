@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:san/sosmessage.dart';
 
 import '../main.dart';
 
@@ -245,6 +246,19 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Color.fromRGBO(37, 36, 39, 1),
+        label: Text(
+          'View SOS Messege',
+          style: TextStyle(
+              color: Colors.white, fontSize: 12, fontFamily: 'SFProDisplay'),
+        ),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SosMessage()));
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
