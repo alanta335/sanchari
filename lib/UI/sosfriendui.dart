@@ -6,21 +6,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:san/addfriends.dart';
 import 'package:clipboard/clipboard.dart';
 
-class ViewFriendsUI extends StatefulWidget {
-  const ViewFriendsUI({Key? key}) : super(key: key);
+class SosFriendsUI extends StatefulWidget {
+  const SosFriendsUI({Key? key}) : super(key: key);
 
   @override
-  _ViewFriendsUIState createState() => _ViewFriendsUIState();
+  _SosFriendsUIState createState() => _SosFriendsUIState();
 }
 
-class _ViewFriendsUIState extends State<ViewFriendsUI> {
+class _SosFriendsUIState extends State<SosFriendsUI> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     Query users = FirebaseFirestore.instance
         .collection('USERS')
         .doc('${FirebaseAuth.instance.currentUser!.uid}')
-        .collection('FRIENDS');
+        .collection('EME_FR');
     return StreamBuilder<QuerySnapshot>(
       stream: users.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -45,44 +45,13 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                 cacheExtent: 300,
                 reverse: false,
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  if (document.id == "NO_OF_FRIENDS") {
-                    return Card();
-                  }
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
                       elevation: 0,
                     ),
                     onPressed: () {},
-                    onLongPress: () {
-                      Alert(
-                        context: context,
-                        title: "ADD to emergency contact list?",
-                        buttons: [
-                          DialogButton(
-                            onPressed: () async {
-                              FirebaseFirestore.instance
-                                  .collection('USERS')
-                                  .doc(
-                                      '${FirebaseAuth.instance.currentUser!.uid}')
-                                  .collection('EME_FR')
-                                  .doc('${document.id}')
-                                  .set({
-                                'name': document.get('name'),
-                              });
-                              Navigator.pop(context);
-                            },
-                            child: Text("Yes"),
-                          ),
-                          DialogButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("No"),
-                          )
-                        ],
-                      ).show();
-                    },
+                    onLongPress: () {},
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 10, bottom: 10),
@@ -138,29 +107,8 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
               ),
             ],
           ),
-          floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: Color.fromRGBO(37, 36, 39, 1),
-            label: Text(
-              'Add Friends',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontFamily: 'SFProDisplay'),
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddFriends()));
-            },
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
         );
       },
     );
-  }
-
-  Future<void> _copyToClipboard() async {
-    await Clipboard.setData(
-        ClipboardData(text: FirebaseAuth.instance.currentUser!.uid));
   }
 }

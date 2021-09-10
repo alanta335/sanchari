@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../main.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -158,12 +161,20 @@ class _ProfileState extends State<Profile> {
                   height: 20,
                   width: MediaQuery.of(context).size.width * .4,
                   child: Center(
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontFamily: 'SFProDisplay'),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final provider = Provider.of<GoogleSignInProvider>(
+                            context,
+                            listen: false);
+                        provider.loggedout();
+                      },
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontFamily: 'SFProDisplay'),
+                      ),
                     ),
                   ),
                 ),
