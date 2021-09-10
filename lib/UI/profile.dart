@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+import 'package:san/UI/login.dart';
+import 'package:san/main.dart';
+
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -154,6 +158,17 @@ class _ProfileState extends State<Profile> {
             ),
             Center(
               child: GestureDetector(
+                onTap: () {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  provider.loggedout();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Signup(),
+                    ),
+                  );
+                },
                 child: Container(
                   height: 20,
                   width: MediaQuery.of(context).size.width * .4,
