@@ -75,6 +75,18 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                                       .set({
                                     'name': document.get('name'),
                                   });
+                                  FirebaseFirestore.instance
+                                      .collection('USERS')
+                                      .doc('${document.id}')
+                                      .collection('PLAN')
+                                      .doc('$x')
+                                      .collection('personName')
+                                      .doc(
+                                          '${FirebaseAuth.instance.currentUser!.uid}')
+                                      .set({
+                                    'name': FirebaseAuth
+                                        .instance.currentUser!.displayName,
+                                  });
                                   Navigator.pop(context);
                                 },
                               ),
