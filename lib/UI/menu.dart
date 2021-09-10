@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:san/UI/profile.dart';
 import 'package:san/UI/viewFriendsui.dart';
 import 'package:san/addfriends.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,13 +19,6 @@ class _MenuState extends State<Menu> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            final provider =
-                Provider.of<GoogleSignInProvider>(context, listen: false);
-            provider.loggedout();
-          },
-        ),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(height * 0.12),
             child: AppBar(
@@ -87,7 +81,7 @@ class _MenuState extends State<Menu> {
                   ]),
             )),
         body: TabBarView(
-            children: [Text('blah bah'), ViewFriendsUI(), Text('blah bah')]),
+            children: [Profile(), ViewFriendsUI(), Text('blah bah')]),
       ),
     );
   }

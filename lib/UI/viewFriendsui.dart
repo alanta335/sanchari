@@ -40,31 +40,6 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
         return Scaffold(
           body: Stack(
             children: [
-              Positioned(
-                bottom: 16,
-                right: 8,
-                child: Container(
-                  child: Row(
-                    children: [
-                      Text(
-                        'Copy Id',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            fontFamily: 'SFProDisplay'),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.copy),
-                        iconSize: 25,
-                        onPressed: () {
-                          _copyToClipboard();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               ListView(
                 addAutomaticKeepAlives: false,
                 cacheExtent: 300,
@@ -116,9 +91,9 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: Color.fromRGBO(0, 0, 0, .2),
-                              blurRadius: 20.0,
-                            )
+                                color: Color.fromRGBO(0, 0, 0, .05),
+                                blurRadius: 10.0,
+                                spreadRadius: 5)
                           ],
                         ),
                         child: Center(
@@ -130,13 +105,13 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.white,
-                                      child: Image(
-                                        image: AssetImage('images/google.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                        radius: 20,
+                                        backgroundColor: Colors.white,
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 25,
+                                          color: Color.fromRGBO(37, 36, 39, 1),
+                                        )),
                                     SizedBox(
                                       width: 20,
                                     ),
@@ -150,19 +125,6 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.white,
-                                      child: Image(
-                                        image: AssetImage('images/chat1.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ],
-                                )
                               ],
                             ),
                           ),

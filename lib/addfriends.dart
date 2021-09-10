@@ -17,69 +17,73 @@ class _AddFriendsState extends State<AddFriends> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+          centerTitle: true,
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(37, 36, 39, 1),
+          ),
+          elevation: 0,
           backgroundColor: Colors.white,
           title: Text("Add Friends",
               style: TextStyle(
-                  color: Colors.black, fontFamily: 'SFProDisplay-Regular'))),
+                  color: Colors.black,
+                  fontFamily: 'SFProDisplay-Regular',
+                  fontSize: 22))),
       body: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text('Copy Your ID  ',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'SFProDisplay-Regular',
+                    fontSize: 16)),
             IconButton(
                 onPressed: () {
                   Clipboard.setData(ClipboardData(
                       text: FirebaseAuth.instance.currentUser!.uid));
                 },
                 icon: Icon(Icons.copy)),
-            Container(
-                decoration: BoxDecoration(
+            SizedBox(height: 10),
+            Text('Add Friend\'s id',
+                style: TextStyle(
                     color: Colors.black,
-                    borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'my id ${FirebaseAuth.instance.currentUser!.uid}',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'SFProDisplay-Regular'),
-                  ),
-                )),
+                    fontFamily: 'SFProDisplay-Regular',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 22)),
             SizedBox(height: 10),
-            Text(
-              'Add Friend\'s id',
-              style: TextStyle(
-                  color: Colors.black, fontFamily: 'SFProDisplay-Regular'),
-            ),
-            SizedBox(height: 10),
-            Container(
-              height: 60,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, .2),
-                    blurRadius: 20.0,
-                  )
-                ],
-              ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: addFriendIdController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Color.fromRGBO(148, 153, 162, 1),
-                      ),
-                      hintText: 'Friends Id',
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintStyle: TextStyle(
-                        color: Color.fromRGBO(148, 153, 162, 1),
+            Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, .2),
+                      blurRadius: 20.0,
+                    )
+                  ],
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: addFriendIdController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Color.fromRGBO(148, 153, 162, 1),
+                        ),
+                        hintText: 'Friends Id',
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintStyle: TextStyle(
+                          color: Color.fromRGBO(148, 153, 162, 1),
+                        ),
                       ),
                     ),
                   ),
@@ -149,18 +153,21 @@ class _AddFriendsState extends State<AddFriends> {
                 } catch (e) {}
               },
               child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.black),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      'Add as friend',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'SFProDisplay-Regular'),
-                    ),
-                  )),
+                height: 45,
+                width: MediaQuery.of(context).size.width * .4,
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(37, 36, 39, 1),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Center(
+                  child: Text(
+                    'Add Friend',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'SFProDisplay'),
+                  ),
+                ),
+              ),
             ),
             Text('$addSuccess'),
           ],
