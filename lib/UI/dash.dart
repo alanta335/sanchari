@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:san/UI/login.dart';
+import 'package:san/UI/tripfriends.dart';
 import 'package:san/trip.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +14,13 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+var x = 'Escape From Work';
+
 class _HomeState extends State<Home> {
   final user = FirebaseAuth.instance.currentUser!;
   var loc;
+
+  TextEditingController tripnameController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -31,13 +38,85 @@ class _HomeState extends State<Home> {
                   iconSize: 25,
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
+                    Alert(
+                      content: Container(
+                        height: 55,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, .05),
+                                blurRadius: 10.0,
+                                spreadRadius: 5)
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 16, left: 8, right: 8, bottom: 8),
+                          child: TextFormField(
+                            controller: tripnameController,
+                            style: TextStyle(
+                              color: Color.fromRGBO(148, 153, 162, 1),
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Trip name',
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintStyle: TextStyle(
+                                color: Color.fromRGBO(148, 153, 162, 1),
+                              ),
+                            ),
+                            validator: (val) {
+                              if (val == null || val.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ),
+                      context: context,
+                      title: "Change trip name",
+                      buttons: [
+                        DialogButton(
+                          onPressed: () async {
+                            FirebaseFirestore.instance
+                                .collection('USERS')
+                                .doc(
+                                    '${FirebaseAuth.instance.currentUser!.uid}')
+                                .collection('PLAN')
+                                .doc('${tripnameController.text}')
+                                .collection('personName')
+                                .doc(
+                                    '${FirebaseAuth.instance.currentUser!.uid}')
+                                .set({
+                              'name': FirebaseAuth
+                                  .instance.currentUser!.displayName,
+                            });
+                            setState(() {
+                              x = tripnameController.text;
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: Text("change"),
+                        ),
+                        DialogButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("no change"),
+                        )
+                      ],
+                    ).show();
                   },
                 ),
               ],
               title: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  'Escape From Work',
+                  '$x',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 25,
@@ -66,7 +145,7 @@ class _HomeState extends State<Home> {
                     )),
                     Tab(
                         child: Text(
-                      'Friends',
+                      'friends',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -103,7 +182,7 @@ class _HomeState extends State<Home> {
               TabBarView(children: [
                 Trip(),
                 Container(
-                  child: Text("User Body"),
+                  child: TripFriendsUI(),
                 ),
               ]),
               Positioned(

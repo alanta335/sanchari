@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:san/UI/dash.dart';
 import 'package:san/addfriends.dart';
 import 'package:clipboard/clipboard.dart';
 
@@ -56,6 +57,36 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                     onPressed: () {},
                     onLongPress: () {
                       Alert(
+                        content: Container(
+                          child: Column(
+                            children: [
+                              Text('ADD TO TRIP current: $x'),
+                              ElevatedButton(
+                                child: Text("yes"),
+                                onPressed: () async {
+                                  FirebaseFirestore.instance
+                                      .collection('USERS')
+                                      .doc(
+                                          '${FirebaseAuth.instance.currentUser!.uid}')
+                                      .collection('PLAN')
+                                      .doc('$x')
+                                      .collection('personName')
+                                      .doc('${document.id}')
+                                      .set({
+                                    'name': document.get('name'),
+                                  });
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              ElevatedButton(
+                                child: Text("No"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          ),
+                        ),
                         context: context,
                         title: "ADD to emergency contact list?",
                         buttons: [
