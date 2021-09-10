@@ -72,7 +72,11 @@ class _MapScreen2State extends State<MapScreen2> {
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(37, 36, 39, 1),
                           borderRadius: BorderRadius.circular(10)),
-                      child: Center(child: Text('nearby'))),
+                      child: Center(
+                          child: Text(
+                        'Nearby',
+                        style: TextStyle(color: Colors.white),
+                      ))),
                 )
               ],
             ),

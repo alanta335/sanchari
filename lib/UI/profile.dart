@@ -193,22 +193,15 @@ class _ProfileState extends State<Profile> {
                 },
                 child: Container(
                   height: 20,
+                  color: Colors.transparent,
                   width: MediaQuery.of(context).size.width * .4,
                   child: Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        final provider = Provider.of<GoogleSignInProvider>(
-                            context,
-                            listen: false);
-                        provider.loggedout();
-                      },
-                      child: Text(
-                        'Logout',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontFamily: 'SFProDisplay'),
-                      ),
+                    child: Text(
+                      'Logout',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontFamily: 'SFProDisplay'),
                     ),
                   ),
                 ),

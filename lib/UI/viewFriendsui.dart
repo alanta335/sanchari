@@ -57,12 +57,23 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                     onPressed: () {},
                     onLongPress: () {
                       Alert(
+                        context: context,
+                        title: "",
+                        buttons: [],
                         content: Container(
                           child: Column(
                             children: [
-                              Text('ADD TO TRIP current: $x'),
-                              ElevatedButton(
-                                child: Text("yes"),
+                              Text(
+                                'ADD TO TRIP : $x',
+                                style: TextStyle(color: Colors.black),
+                                textAlign: TextAlign.center,
+                              ),
+                              DialogButton(
+                                color: Color.fromRGBO(37, 36, 39, 1),
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 onPressed: () async {
                                   FirebaseFirestore.instance
                                       .collection('USERS')
@@ -90,40 +101,56 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                                   Navigator.pop(context);
                                 },
                               ),
-                              ElevatedButton(
-                                child: Text("No"),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              DialogButton(
+                                color: Color.fromRGBO(37, 36, 39, 1),
+                                child: Text(
+                                  "No",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
+                              ),
+                              Text(
+                                'ADD to emergency contact list?',
+                                style: TextStyle(color: Colors.black),
+                                textAlign: TextAlign.center,
+                              ),
+                              DialogButton(
+                                color: Color.fromRGBO(37, 36, 39, 1),
+                                onPressed: () async {
+                                  FirebaseFirestore.instance
+                                      .collection('USERS')
+                                      .doc(
+                                          '${FirebaseAuth.instance.currentUser!.uid}')
+                                      .collection('EME_FR')
+                                      .doc('${document.id}')
+                                      .set({
+                                    'name': document.get('name'),
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              DialogButton(
+                                color: Color.fromRGBO(37, 36, 39, 1),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "No",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               )
                             ],
                           ),
                         ),
-                        context: context,
-                        title: "ADD to emergency contact list?",
-                        buttons: [
-                          DialogButton(
-                            onPressed: () async {
-                              FirebaseFirestore.instance
-                                  .collection('USERS')
-                                  .doc(
-                                      '${FirebaseAuth.instance.currentUser!.uid}')
-                                  .collection('EME_FR')
-                                  .doc('${document.id}')
-                                  .set({
-                                'name': document.get('name'),
-                              });
-                              Navigator.pop(context);
-                            },
-                            child: Text("Yes"),
-                          ),
-                          DialogButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("No"),
-                          )
-                        ],
                       ).show();
                     },
                     child: Padding(

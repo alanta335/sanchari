@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:san/UI/homescreen.dart';
 import 'package:san/main.dart';
+import 'package:san/weatherUI.dart';
+import 'dart:async';
 
 class Signup extends StatefulWidget {
   @override
@@ -9,6 +12,7 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  @override
   final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -49,6 +53,12 @@ class _SignupState extends State<Signup> {
               final provider =
                   Provider.of<GoogleSignInProvider>(context, listen: false);
               provider.googleLogin();
+              Timer(
+                  Duration(seconds: 10),
+                  () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeScreen(locality: loc))));
             },
             child: Container(
               height: 50,

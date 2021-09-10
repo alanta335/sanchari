@@ -81,6 +81,7 @@ class _HomeState extends State<Home> {
                       title: "Change trip name",
                       buttons: [
                         DialogButton(
+                          color: Color.fromRGBO(37, 36, 39, 1),
                           onPressed: () async {
                             FirebaseFirestore.instance
                                 .collection('USERS')
@@ -100,13 +101,20 @@ class _HomeState extends State<Home> {
                             });
                             Navigator.pop(context);
                           },
-                          child: Text("change"),
+                          child: Text(
+                            "change",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                         DialogButton(
+                          color: Color.fromRGBO(37, 36, 39, 1),
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text("no change"),
+                          child: Text(
+                            "no change",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         )
                       ],
                     ).show();
