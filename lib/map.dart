@@ -44,7 +44,7 @@ class _MapScreenState extends State<MapScreen> {
 
   TextEditingController searchQ = TextEditingController();
   var googlePlace = GooglePlace('AIzaSyA1bs9xDzhAEb5IpByX_-e0SzPW1QSXKQU');
-  late BitmapDescriptor map_marker;
+  late BitmapDescriptor map_marker,hospital_marker,police_marker,repair_marker,restro_marker;
   List<AutocompletePrediction> predictions = [];
 
   @override
@@ -363,6 +363,18 @@ class _MapScreenState extends State<MapScreen> {
   void setCustomMrker() async {
     map_marker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'images/markerfrnd.png');
+    
+     hospital_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/hospital.png');
+
+    police_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/police.png');
+
+    repair_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/repair.png');
+
+    restro_marker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'images/restro.png');
   }
 
   void addMarkerOfFriends(
@@ -421,6 +433,7 @@ class _MapScreenState extends State<MapScreen> {
     for (int i = 0; i < searchResultList.length; i++) {
       markers.add(
         Marker(
+          icon: hospital_marker,
           infoWindow: InfoWindow(
             title: searchResultList[i].name,
           ),
@@ -436,8 +449,7 @@ class _MapScreenState extends State<MapScreen> {
     for (int i = 0; i < searchResultList2.length; i++) {
       markers.add(
         Marker(
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+          icon: police_marker,
           infoWindow: InfoWindow(
             title: searchResultList2[i].name,
           ),
@@ -453,7 +465,7 @@ class _MapScreenState extends State<MapScreen> {
     for (int i = 0; i < searchResultList3.length; i++) {
       markers.add(
         Marker(
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          icon: restro_marker,
           infoWindow: InfoWindow(
             title: searchResultList3[i].name,
           ),
@@ -469,8 +481,7 @@ class _MapScreenState extends State<MapScreen> {
     for (int i = 0; i < searchResultList4.length; i++) {
       markers.add(
         Marker(
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+          icon:repair_marker,
           infoWindow: InfoWindow(
             title: searchResultList4[i].name,
           ),
