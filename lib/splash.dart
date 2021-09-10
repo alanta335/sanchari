@@ -14,11 +14,11 @@ class Ss extends StatefulWidget {
 }
 
 class _SsState extends State<Ss> {
+  var loc;
   late l.LocationData _locationData;
 
   FirebaseAuth auth = FirebaseAuth.instance;
   l.Location location = new l.Location();
-  final HomeScr = HomeScreen();
   var _currentAddress;
   late bool _serviceEnabled;
   late l.PermissionStatus _permissionGranted;
@@ -34,8 +34,17 @@ class _SsState extends State<Ss> {
     Timer(
         Duration(seconds: 1),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeScreen())));
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen(locality: loc))));
+    for (int x = 0; x < 2; x++) {
+      _getLoc();
+      print('$loc*&&&&&&&&');
+    }
+    print('$loc++++++______+_+_+_+_');
   }
+
+  late Placemark place;
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +94,11 @@ class _SsState extends State<Ss> {
       List<Placemark> placemarks = await placemarkFromCoordinates(
           _locationData.latitude!, _locationData.longitude!);
 
-      Placemark place = placemarks[0];
-      place_sos = place;
-      loc = place.locality;
       setState(() {
+        place = placemarks[0];
+        place_sos = place;
+        loc = place.locality;
+        print('$loc*************');
         _currentAddress =
             "${place.locality}, ${place.postalCode}, ${place.country}";
       });

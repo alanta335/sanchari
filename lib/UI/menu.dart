@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:san/UI/viewFriendsui.dart';
 import 'package:san/addfriends.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:san/main.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -16,6 +18,13 @@ class _MenuState extends State<Menu> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            final provider =
+                Provider.of<GoogleSignInProvider>(context, listen: false);
+            provider.loggedout();
+          },
+        ),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(height * 0.12),
             child: AppBar(

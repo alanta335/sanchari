@@ -16,19 +16,21 @@ import 'package:geocoding/geocoding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-var loc;
-
 class HomeScreen extends StatefulWidget {
+  var locality;
+
+  HomeScreen({required this.locality});
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState(loc: locality);
 }
 
 var la;
 var lo;
 
 class _HomeScreenState extends State<HomeScreen> {
+  var loc;
+  _HomeScreenState({required this.loc});
   late l.LocationData _locationData;
-
   FirebaseAuth auth = FirebaseAuth.instance;
   l.Location location = new l.Location();
   var _currentAddress;
@@ -40,8 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isCompleted = false;
   int _selected_item = 0;
   double latt = 0;
+  late Placemark place;
   @override
   Widget build(BuildContext context) {
+    for (int x = 0; x < 1; x++) {
+      if (_isGetLocation = false) {
+        _getLoc();
+      }
+    }
     List<Widget> _widgetchoose = <Widget>[
       Home(),
       Newsfeed(locality: loc),
@@ -49,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       MapScreen2(lat: la, long: lo),
       Menu()
     ];
-    print(loc);
+    print('$loc-----------');
     return Scaffold(
       backgroundColor: Colors.white,
       body: _widgetchoose.elementAt(_selected_item),
@@ -145,18 +153,17 @@ class _HomeScreenState extends State<HomeScreen> {
       la = _locationData.latitude!;
       lo = _locationData.longitude!;
       _isGetLocation = true;
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _locationData.latitude!, _locationData.longitude!);
+      place = placemarks[0];
+      place_sos = place;
+      loc = place.locality;
       _getAddressFromLatLng();
     });
   }
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          _locationData.latitude!, _locationData.longitude!);
-
-      Placemark place = placemarks[0];
-      place_sos = place;
-      loc = place.locality;
       setState(() {
         _currentAddress =
             "${place.locality}, ${place.postalCode}, ${place.country}";
