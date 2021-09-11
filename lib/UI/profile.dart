@@ -18,7 +18,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String address = '';
   TextEditingController phnoController = TextEditingController();
-  TextEditingController tripController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   String phoneNumber = '';
   String email = '';
   @override
@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Trip name',
+              'Username',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -56,13 +56,13 @@ class _ProfileState extends State<Profile> {
                 padding: const EdgeInsets.only(
                     top: 16, left: 8, right: 8, bottom: 8),
                 child: TextFormField(
-                  controller: tripController,
+                  controller: usernameController,
                   style: TextStyle(
                     color: Color.fromRGBO(148, 153, 162, 1),
                   ),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Trip name',
+                    hintText: 'Username',
                     fillColor: Colors.white,
                     filled: true,
                     hintStyle: TextStyle(
@@ -155,7 +155,7 @@ class _ProfileState extends State<Profile> {
                       .collection('USERS')
                       .doc('${FirebaseAuth.instance.currentUser!.uid}')
                       .update({
-                    'Trip_name': tripController.text,
+                    'name': usernameController.text,
                   });
                 },
                 child: Container(
