@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:san/UI/homescreen.dart';
@@ -10,9 +12,48 @@ import 'package:san/UI/login.dart';
 import 'package:san/splash.dart';
 import 'homepage.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    '1', 'Basic ', 'Test',
+    icon: "@mipmap/ic_launcher",
+    importance: Importance.low,
+    styleInformation: BigTextStyleInformation("test",
+        htmlFormatBigText: true,
+        contentTitle: 'SOS',
+        htmlFormatContent: true,
+        summaryText: 'A friend is in danger!',
+        htmlFormatSummaryText: true));
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    //onSelectNotification: navigate();
+  );
+
+  bool hasPermissions = await FlutterBackground.hasPermissions;
+  final androidConfig = FlutterBackgroundAndroidConfig(
+    notificationTitle: "Sanchari",
+    notificationText: "Sanchari is running in the background",
+    notificationImportance: AndroidNotificationImportance.Default,
+    notificationIcon: AndroidResource(
+        name: 'background_icon',
+        defType: 'drawable'), // Default is ic_launcher from folder mipmap
+  );
+  bool success =
+      await FlutterBackground.initialize(androidConfig: androidConfig);
+  bool running = await FlutterBackground.enableBackgroundExecution();
+
+  print("+++++++++++++++ $success");
 
   runApp(MyApp());
 }
@@ -54,6 +95,7 @@ class _MYHomePageState extends State<MYHomePage> {
                   child: Text("error"),
                 );
               } else if (snapshot.hasData) {
+                check();
                 return Ss();
               } else {
                 return Signup();
@@ -113,4 +155,21 @@ class GoogleSignInProvider extends ChangeNotifier {
       print(e.toString());
     }
   }
+}
+
+void check() {
+  NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
+  CollectionReference reference = FirebaseFirestore.instance
+      .collection('USERS')
+      .doc('${FirebaseAuth.instance.currentUser!.uid}')
+      .collection('SOS');
+  reference.snapshots().listen((querySnapshot) {
+    querySnapshot.docChanges.forEach((change) async {
+      print("HIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+      await flutterLocalNotificationsPlugin.show(
+          1, 'plain title', 'plain body', platformChannelSpecifics,
+          payload: 'item x');
+    });
+  });
 }
