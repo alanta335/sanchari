@@ -480,26 +480,8 @@ class _MapScreen2State extends State<MapScreen2> {
               searchResultList[i].geometry!.location!.lng!),
           onTap: () {
             Alert(
-              content: Container(
-                height: 55,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, .05),
-                        blurRadius: 10.0,
-                        spreadRadius: 5)
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 16, left: 8, right: 8, bottom: 8),
-                  child: Text('call'),
-                ),
-              ),
               context: context,
-              title: "Do you want to call",
+              title: "Do you want to call " + searchResultList[i].name!,
               buttons: [
                 DialogButton(
                   color: Color.fromRGBO(37, 36, 39, 1),
@@ -522,7 +504,7 @@ class _MapScreen2State extends State<MapScreen2> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    "No change",
+                    "Direction",
                     style: TextStyle(color: Colors.white),
                   ),
                 )
