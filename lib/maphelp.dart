@@ -499,7 +499,7 @@ class _MapScreen2State extends State<MapScreen2> {
                 ),
               ),
               context: context,
-              title: "do you want to call",
+              title: "Do you want to call",
               buttons: [
                 DialogButton(
                   color: Color.fromRGBO(37, 36, 39, 1),
@@ -512,7 +512,7 @@ class _MapScreen2State extends State<MapScreen2> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    "call...",
+                    "Call",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -522,7 +522,7 @@ class _MapScreen2State extends State<MapScreen2> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    "no change",
+                    "No change",
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -573,7 +573,7 @@ class _MapScreen2State extends State<MapScreen2> {
                 ),
               ),
               context: context,
-              title: "do you want to call",
+              title: "Do you want to call",
               buttons: [
                 DialogButton(
                   color: Color.fromRGBO(37, 36, 39, 1),
@@ -586,7 +586,7 @@ class _MapScreen2State extends State<MapScreen2> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    "call...",
+                    "Call",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -596,7 +596,7 @@ class _MapScreen2State extends State<MapScreen2> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    "no change",
+                    "No change",
                     style: TextStyle(color: Colors.white),
                   ),
                 )
