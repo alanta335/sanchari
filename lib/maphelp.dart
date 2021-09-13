@@ -53,7 +53,9 @@ class _MapScreen2State extends State<MapScreen2> {
   TextEditingController searchController = new TextEditingController();
   final Set<Marker> markers = {};
   late String queryS;
-
+  bool p3 = true;
+  bool p2 = true;
+  bool p1 = true;
   TextEditingController searchQ = TextEditingController();
   var googlePlace = GooglePlace('AIzaSyA1bs9xDzhAEb5IpByX_-e0SzPW1QSXKQU');
   late BitmapDescriptor map_marker,
@@ -71,12 +73,17 @@ class _MapScreen2State extends State<MapScreen2> {
         body: Stack(fit: StackFit.expand, children: [
           buildMaps(),
           Positioned(
-            bottom: 10,
+            top: 40,
             right: 10,
-            child: Column(
+            left: 10,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                   onTap: () async {
+                    p1 = false;
+                    p2 = true;
+                    p3 = true;
                     _firLoc();
                     _controller.animateCamera(
                       CameraUpdate.newCameraPosition(
@@ -85,39 +92,27 @@ class _MapScreen2State extends State<MapScreen2> {
                   },
                   child: Container(
                       width: 110,
-                      height: 50,
+                      height: 40,
                       decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
+                          color:
+                              p1 ? Colors.white : Color.fromRGBO(37, 36, 39, 1),
+                          borderRadius: BorderRadius.circular(20)),
                       child: Center(
-                        child: Text(
-                          'find friends',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    _nearRest();
-                    _controller.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                          CameraPosition(target: LatLng(la, lo), zoom: 16)),
-                    );
-                  },
-                  child: Container(
-                      width: 110,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                          child: Text(
-                        'Discover Help Nearby',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.person,
+                            color: p1 ? Colors.black : Colors.white,
+                          ),
+                          Text(
+                            'Friend',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: p1 ? Colors.black : Colors.white,
+                                fontSize: 16),
+                          ),
+                        ],
                       ))),
                 ),
                 SizedBox(
@@ -125,34 +120,81 @@ class _MapScreen2State extends State<MapScreen2> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    setState(() {
-                      markers.clear();
-                      route.routes.clear();
-                      markers.add(
-                        Marker(
-                          icon: map_marker,
-                          position: LatLng(la, lo),
-                          markerId: MarkerId('current_location'),
-                          infoWindow: InfoWindow(
-                              title: 'my location', snippet: '$la / $lo'),
-                        ),
-                      );
-                      points.clear();
-                      points.add(LatLng(la, lo));
-                    });
+                    p2 = false;
+                    p1 = true;
+                    p3 = true;
+                    _nearRestpolice();
+                    _controller.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                          CameraPosition(target: LatLng(la, lo), zoom: 16)),
+                    );
                   },
                   child: Container(
                       width: 110,
-                      height: 50,
+                      height: 40,
                       decoration: BoxDecoration(
-                          color: Color.fromRGBO(37, 36, 39, 1),
-                          borderRadius: BorderRadius.circular(10)),
+                          color:
+                              p2 ? Colors.white : Color.fromRGBO(37, 36, 39, 1),
+                          borderRadius: BorderRadius.circular(20)),
                       child: Center(
-                        child: Text(
-                          'Clean Routes',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.shield,
+                            color: p2 ? Colors.black : Colors.white,
+                          ),
+                          Text(
+                            'Police',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: p2 ? Colors.black : Colors.white,
+                                fontSize: 16),
+                          ),
+                        ],
+                      ))),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    p1 = true;
+                    p2 = true;
+                    p3 = false;
+                    _nearResthospital();
+                    _controller.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                          CameraPosition(target: LatLng(la, lo), zoom: 16)),
+                    );
+                  },
+                  child: Container(
+                      width: 110,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color:
+                              p3 ? Colors.white : Color.fromRGBO(37, 36, 39, 1),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.local_hospital,
+                            color: p3 ? Colors.black : Colors.white,
+                          ),
+                          Text(
+                            'Hospital',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: p3 ? Colors.black : Colors.white,
+                                fontSize: 16),
+                          ),
+                        ],
+                      ))),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             ),
@@ -160,10 +202,11 @@ class _MapScreen2State extends State<MapScreen2> {
         ]),
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Color.fromRGBO(37, 36, 39, 1),
+          hoverColor: Colors.white,
           label: Text(
-            'SOS ',
+            'SOS',
             style: TextStyle(
-                color: Colors.white, fontSize: 12, fontFamily: 'SFProDisplay'),
+                color: Colors.white, fontSize: 17, fontFamily: 'SFProDisplay'),
           ),
           onPressed: () {
             _sosLoc();
@@ -418,15 +461,12 @@ class _MapScreen2State extends State<MapScreen2> {
         result2.result!.geometry!.location!.lng!)));
   }
 
-  void _nearRest() async {
+  void _nearResthospital() async {
     var result1 = await googlePlace.search
         .getNearBySearch(Location(lat: la, lng: lo), 5000, type: "hospital");
-    var result2 = await googlePlace.search
-        .getNearBySearch(Location(lat: la, lng: lo), 10000, type: "police");
 
     setState(() {
       searchResultList = result1!.results!;
-      searchResultList2 = result2!.results!;
     });
     for (int i = 0; i < searchResultList.length; i++) {
       markers.add(
@@ -492,6 +532,16 @@ class _MapScreen2State extends State<MapScreen2> {
         ),
       );
     }
+  }
+
+  void _nearRestpolice() async {
+    var result2 = await googlePlace.search
+        .getNearBySearch(Location(lat: la, lng: lo), 10000, type: "police");
+
+    setState(() {
+      searchResultList2 = result2!.results!;
+    });
+
     for (int i = 0; i < searchResultList2.length; i++) {
       markers.add(
         Marker(

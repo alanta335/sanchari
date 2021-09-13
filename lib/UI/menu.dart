@@ -21,7 +21,7 @@ class _MenuState extends State<Menu> {
       length: 3,
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(height * 0.12),
+            preferredSize: Size.fromHeight(height * 0.15),
             child: AppBar(
               elevation: 0,
               title: Padding(
@@ -43,42 +43,33 @@ class _MenuState extends State<Menu> {
                   unselectedLabelColor: Colors.grey,
                   labelColor: Colors.black,
                   tabs: [
-                    Expanded(
-                      flex: 4,
-                      child: Tab(
-                          child: Text(
-                        'Profile',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            fontFamily: 'SFProDisplay'),
-                      )),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Tab(
-                          child: Text(
-                        'Friends',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            fontFamily: 'SFProDisplay'),
-                      )),
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: Tab(
-                          child: Text(
-                        'SOS ',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            fontFamily: 'SFProDisplay'),
-                      )),
-                    ),
+                    Tab(
+                        child: Text(
+                      'Profile',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontFamily: 'SFProDisplay'),
+                    )),
+                    Tab(
+                        child: Text(
+                      'Friends',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontFamily: 'SFProDisplay'),
+                    )),
+                    Tab(
+                        child: Text(
+                      'SOS ',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontFamily: 'SFProDisplay'),
+                    )),
                   ]),
             )),
         body:
