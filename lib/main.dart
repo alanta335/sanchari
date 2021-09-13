@@ -11,19 +11,10 @@ import 'package:san/UI/homescreen.dart';
 import 'package:san/UI/login.dart';
 import 'package:san/splash.dart';
 import 'homepage.dart';
+import 'sosmessage.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    '1', 'Basic ', 'Test',
-    icon: "@mipmap/ic_launcher",
-    importance: Importance.low,
-    styleInformation: BigTextStyleInformation("test",
-        htmlFormatBigText: true,
-        contentTitle: 'SOS',
-        htmlFormatContent: true,
-        summaryText: 'A friend is in danger!',
-        htmlFormatSummaryText: true));
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,10 +26,11 @@ Future main() async {
   final InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    //onSelectNotification: navigate();
-  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: onSelectNotification);
+  final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  String? payload = notificationAppLaunchDetails!.payload;
 
   bool hasPermissions = await FlutterBackground.hasPermissions;
   final androidConfig = FlutterBackgroundAndroidConfig(
@@ -59,12 +51,14 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
+  GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
         create: (context) => GoogleSignInProvider(),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Sanchari',
+          navigatorKey: navigatorKey,
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
@@ -158,18 +152,42 @@ class GoogleSignInProvider extends ChangeNotifier {
 }
 
 void check() {
-  NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
   CollectionReference reference = FirebaseFirestore.instance
       .collection('USERS')
       .doc('${FirebaseAuth.instance.currentUser!.uid}')
       .collection('SOS');
   reference.snapshots().listen((querySnapshot) {
     querySnapshot.docChanges.forEach((change) async {
+      String name = change.doc['name'];
+      String location = change.doc['approx_loc'];
+
       print("HIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+      var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+          '1', 'Basic ', 'Test',
+          icon: "@mipmap/ic_launcher",
+          importance: Importance.low,
+          styleInformation: BigTextStyleInformation(
+              '$name is in danger at $location!',
+              htmlFormatBigText: true,
+              contentTitle: 'SOS',
+              htmlFormatContent: true,
+              summaryText: 'Emergency!',
+              htmlFormatSummaryText: true));
+
+      NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
       await flutterLocalNotificationsPlugin.show(
           1, 'plain title', 'plain body', platformChannelSpecifics,
           payload: 'item x');
     });
   });
+}
+
+Future<dynamic> onSelectNotification(payload) async {
+  Navigator.push(
+    MyApp().navigatorKey.currentState!.context,
+    MaterialPageRoute(
+      builder: (context) => SosMessage(),
+    ),
+  );
 }

@@ -38,6 +38,17 @@ class _SosMessageState extends State<SosMessage> {
           );
         }
         return Scaffold(
+          floatingActionButton: FloatingActionButton(onPressed: () async {
+            var _collectionRef = FirebaseFirestore.instance
+                .collection('USERS')
+                .doc('${FirebaseAuth.instance.currentUser!.uid}')
+                .collection('SOS');
+            _collectionRef.snapshots().forEach((element) {
+              for (QueryDocumentSnapshot snapshot in element.docs) {
+                snapshot.reference.delete();
+              }
+            });
+          }),
           appBar: PreferredSize(
               preferredSize:
                   Size.fromHeight(MediaQuery.of(context).size.height * 0.15),
