@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:core';
 import 'package:san/news.dart';
 import 'package:san/trip.dart';
-
 import 'map.dart';
 import 'sosmessage.dart';
 import 'package:firebase_auth/firebase_auth.dart';

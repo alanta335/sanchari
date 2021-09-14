@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-var x = 'Escape From Work';
+var x = 'Ready for your trip';
 
 class _HomeState extends State<Home> {
   final user = FirebaseAuth.instance.currentUser!;
@@ -193,15 +193,6 @@ class _HomeState extends State<Home> {
                   child: TripFriendsUI(),
                 ),
               ]),
-              Positioned(
-                bottom: 0,
-                right: 8,
-                child: IconButton(
-                  icon: SvgPicture.asset('images/chat.svg'),
-                  iconSize: 65,
-                  onPressed: () {},
-                ),
-              ),
             ],
           ),
         ),

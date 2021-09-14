@@ -54,8 +54,7 @@ class _ViewFriendsUIState extends State<ViewFriendsUI> {
                       primary: Colors.white,
                       elevation: 0,
                     ),
-                    onPressed: () {},
-                    onLongPress: () {
+                    onPressed: () {
                       Alert(
                         context: context,
                         title: "",
