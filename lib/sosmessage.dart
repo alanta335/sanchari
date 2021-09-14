@@ -39,8 +39,8 @@ class _SosMessageState extends State<SosMessage> {
         }
         return Scaffold(
           floatingActionButton: FloatingActionButton(
-              child: Text('stop sos'),
-              foregroundColor: Color.fromRGBO(0, 0, 0, 1.0),
+              child: Text('stop sos', style: TextStyle(fontSize: 9)),
+              backgroundColor: Color.fromRGBO(0, 0, 0, 1.0),
               onPressed: () async {
                 var _collectionRef = FirebaseFirestore.instance
                     .collection('USERS')
