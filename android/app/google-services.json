@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "658814507954-42diu7e1g87fp69o9thltv9f6ti83nbq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sanchari.app",
+            "certificate_hash": "3c35e1006de7ea605c7a28b8c5dab260951f1a9d"
+          }
+        },
+        {
           "client_id": "658814507954-f191jen75vjrd8r53rhaha9fmurmamqb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
